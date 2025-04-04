@@ -43,8 +43,11 @@ const Member = mongoose.model('Member', memberSchema);
 
 const Event = mongoose.model('Event', eventSchema);
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve static files from the current directory
+app.use(express.static(__dirname));
+
+// Route to serve home.html on root
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'));
 });
