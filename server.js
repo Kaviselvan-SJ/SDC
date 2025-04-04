@@ -46,8 +46,9 @@ const Event = mongoose.model('Event', eventSchema);
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
+    res.sendFile(path.join(__dirname, 'home.html'));
 });
+
 
 // Increase request body size limit
 app.use(express.json({ limit: "50mb" })); // Allows up to 10MB JSON payload
