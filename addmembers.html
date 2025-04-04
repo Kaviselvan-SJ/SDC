@@ -181,7 +181,7 @@
         // Fetch members from the backend and display them
         async function fetchMembers() {
           try {
-            const response = await fetch("http://localhost:5000/members");
+            const response = await fetch("https://sdc-yjpb.onrender.com/members");
             if (!response.ok)
               throw new Error(`Failed to fetch members: ${response.status}`);
 
@@ -216,7 +216,7 @@
             const newMember = { name, department, year, photo: photoUrl };
 
             try {
-              const response = await fetch("http://localhost:5000/add-member", {
+              const response = await fetch("https://sdc-yjpb.onrender.com/add-member", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newMember),
@@ -276,7 +276,7 @@
 
           try {
             const response = await fetch(
-              "http://localhost:5000/delete-member",
+              "https://sdc-yjpb.onrender.com/delete-member",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

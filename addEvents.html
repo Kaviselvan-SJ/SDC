@@ -161,7 +161,7 @@
             };
 
             try {
-              const response = await fetch("http://localhost:5000/add-event", {
+              const response = await fetch("https://sdc-yjpb.onrender.com/add-event", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newEvent),
@@ -202,7 +202,7 @@
           }
 
           try {
-            const response = await fetch("http://localhost:5000/delete-event", {
+            const response = await fetch("https://sdc-yjpb.onrender.com/delete-event", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ title }),
@@ -221,7 +221,7 @@
         }
         async function fetchEvents() {
           try {
-            const response = await fetch("http://localhost:5000/events");
+            const response = await fetch("https://sdc-yjpb.onrender.com/events");
             if (!response.ok) {
               throw new Error(`Failed to fetch events: ${response.status}`);
             }
