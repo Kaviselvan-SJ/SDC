@@ -47,14 +47,17 @@ const Event = mongoose.model('Event', eventSchema);
 app.use(express.json({ limit: "50mb" })); // Allows up to 10MB JSON payload
 app.use(express.urlencoded({ limit: "50mb", extended: true })); // For form data
 
+
+
 // Serve static files from the current directory
-app.use(express.static(__dirname));
+// Serve static files from assets directory
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 
 // Route to serve home.html on root
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'));
 });
-
 
 
 
