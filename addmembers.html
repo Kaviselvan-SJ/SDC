@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>SDC CIT</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <!-- Favicons -->
+    <link href="assets/img/logo.png" rel="icon" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Cardo:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet" />
+  </head>
+
+  <body class="contact-page">
+    <header id="header" class="header d-flex align-items-center sticky-top">
+      <div
+        class="container-fluid position-relative d-flex align-items-center justify-content-between"
+      >
+        <a
+          href="index.html"
+          class="logo d-flex align-items-center me-auto me-xl-0"
+        >
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <img src="assets/img/logo.png" alt="" />
+          <h1 class="sitename">SDC CIT</h1>
+        </a>
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li>
+              <a href="home.html">Home<br /></a>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="members.html">Members</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+        <div class="header-social-links">
+          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="https://www.instagram.com/sdc_cit" target="_blank"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit" target="_blank"
+            ><i class="bi bi-linkedin"></i
+          ></a>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <!-- Add Member Form -->
+        <h2 class="text-center">Add Member</h2>
+        <div class="admin-form">
+          <input
+            type="text"
+            id="memberName"
+            class="form-control"
+            placeholder="Member Name"
+            required
+          />
+          <input
+            type="text"
+            id="memberDepartment"
+            class="form-control"
+            placeholder="Department"
+            required
+          />
+          <input
+            type="text"
+            id="memberYear"
+            class="form-control"
+            placeholder="Year (e.g., 2nd Year)"
+            required
+          />
+          <input
+            type="file"
+            id="memberPhoto"
+            class="form-control"
+            accept="image/*"
+            required
+          />
+          <button class="btn btn-primary w-100 mt-3" onclick="addMember()">
+            Add Member
+          </button>
+        </div>
+
+        <!-- Members List Section -->
+        <h2>Members</h2>
+        <div id="membersList" class="members-container"></div>
+      </div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          fetchMembers(); // Fetch members first
+        });
+
+        const memberContainer = document.getElementById("membersList");
+
+        // Function to store the current order in localStorage
+        function storeOrder() {
+          const orderedMembers = Array.from(
+            document.querySelectorAll(".member-card")
+          ).map((card) => card.id);
+          localStorage.setItem("memberOrder", JSON.stringify(orderedMembers));
+        }
+
+        // Function to load members in saved order
+        function loadMembers() {
+          const savedOrder =
+            JSON.parse(localStorage.getItem("memberOrder")) || [];
+          const members = Array.from(document.querySelectorAll(".member-card"));
+
+          if (savedOrder.length > 0) {
+            // Clear the container and re-append elements in saved order
+            members.forEach((member) => memberContainer.appendChild(member));
+            savedOrder.forEach((memberId) => {
+              const member = document.getElementById(memberId);
+              if (member) memberContainer.appendChild(member);
+            });
+          }
+        }
+
+        // Drag Events
+        function drag(event) {
+          event.dataTransfer.setData("text/plain", event.target.id);
+        }
+
+        function allowDrop(event) {
+          event.preventDefault();
+        }
+
+        function drop(event) {
+          event.preventDefault();
+
+          const draggedId = event.dataTransfer.getData("text/plain");
+          const draggedElement = document.getElementById(draggedId);
+          const targetElement = event.target.closest(".member-card");
+
+          if (targetElement && targetElement !== draggedElement) {
+            memberContainer.insertBefore(draggedElement, targetElement);
+            storeOrder(); // Save the new order
+          }
+        }
+
+        // Apply the event listeners
+        memberContainer.addEventListener("dragover", allowDrop);
+        memberContainer.addEventListener("drop", drop);
+
+        // Fetch members from the backend and display them
+        async function fetchMembers() {
+          try {
+            const response = await fetch("http://localhost:5000/members");
+            if (!response.ok)
+              throw new Error(`Failed to fetch members: ${response.status}`);
+
+            const members = await response.json();
+            displayMembers(members);
+
+            // Load the correct order after members are displayed
+            setTimeout(loadMembers, 100);
+          } catch (error) {
+            console.error("Error fetching members:", error);
+          }
+        }
+        // Function to add a new member
+        async function addMember() {
+          const name = document.getElementById("memberName").value.trim();
+          const department = document
+            .getElementById("memberDepartment")
+            .value.trim();
+          const year = document.getElementById("memberYear").value.trim();
+          const photoFile = document.getElementById("memberPhoto").files[0];
+
+          if (!name || !department || !year || !photoFile) {
+            alert("⚠️ Please fill in all required fields!");
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.readAsDataURL(photoFile);
+
+          reader.onload = async function () {
+            const photoUrl = reader.result;
+            const newMember = { name, department, year, photo: photoUrl };
+
+            try {
+              const response = await fetch("http://localhost:5000/add-member", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newMember),
+              });
+
+              const result = await response.json();
+              if (result.success) {
+                alert("✅ Member added successfully!");
+                fetchMembers();
+              } else {
+                alert("❌ Failed to add member: " + result.message);
+              }
+            } catch (error) {
+              console.error("Error adding member:", error);
+            }
+          };
+
+          // Clear the form inputs after submission
+          document.getElementById("memberName").value = "";
+          document.getElementById("memberDepartment").value = "";
+          document.getElementById("memberYear").value = "";
+          document.getElementById("memberPhoto").value = "";
+        }
+
+        // Display members in the DOM
+        function displayMembers(members) {
+          memberContainer.innerHTML = ""; // Clear previous members
+
+          members.forEach((member) => {
+            const memberDiv = document.createElement("div");
+            memberDiv.className = "member-card";
+            memberDiv.id = `member-${member._id}`;
+            memberDiv.draggable = true;
+            memberDiv.ondragstart = drag;
+
+            memberDiv.innerHTML = `
+            <div class="member">
+                <img src="${member.photo}" alt="${member.name}" class="member-photo">
+                <div class="details">
+                    <h3 class="member-name">${member.name}</h3>
+                    <p><strong></strong> ${member.department} ${member.year}</p>
+                </div>
+                <button class="delete-btn" onclick='deleteMember("${member.name}")'>Delete</button>
+            </div>
+        `;
+
+            memberContainer.appendChild(memberDiv);
+          });
+
+          // Load saved order from localStorage after rendering members
+          loadMembers();
+        }
+
+        // Delete a member
+        async function deleteMember(name) {
+          if (!confirm(`Are you sure you want to delete ${name}?`)) return;
+
+          try {
+            const response = await fetch(
+              "http://localhost:5000/delete-member",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name }),
+              }
+            );
+
+            const result = await response.json();
+            if (result.success) {
+              alert("✅ Member deleted successfully!");
+              fetchMembers();
+            } else {
+              alert("❌ Failed to delete member: " + result.message);
+            }
+          } catch (error) {
+            console.error("Error deleting member:", error);
+          }
+        }
+      </script>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="container">
+        <div class="copyright text-center">
+          <p>
+            © <span>Copyright</span>
+            <strong class="px-1 sitename">SDC CIT</strong>
+            <span>All Rights Reserved</span>
+          </p>
+        </div>
+        <div class="social-links d-flex justify-content-center">
+          <a href=""><i class="bi bi-twitter-x"></i></a>
+          <a href=""><i class="bi bi-facebook"></i></a>
+          <a href="https://www.instagram.com/sdc_cit" target="_blank"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit" target="_blank"
+            ><i class="bi bi-linkedin"></i
+          ></a>
+        </div>
+        <div class="credits">Designed by SDC CIT</div>
+      </div>
+    </footer>
+
+    <!-- Scroll Top -->
+    <a
+      href="#"
+      id="scroll-top"
+      class="scroll-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <!-- Preloader -->
+    <div id="preloader">
+      <div class="line"></div>
+    </div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

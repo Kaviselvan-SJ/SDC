@@ -1,0 +1,92 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+  }
+  
+  header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  header nav ul li {
+    margin-right: 20px;
+  }
+  
+  header nav a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  #hero {
+    background-image: linear-gradient(to bottom, #3498db, #f1c40f);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .event-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .event-card {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .event-card h3 {
+    margin-top: 0;
+  }
+  
+  .event-card p {
+    margin-bottom: 20px;
+  }
+  
+  footer {
+    background-color: #3498db;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    clear: both;
+    position: relative;
+    z-index: 10;
+    height: 100px;
+  }
+  
+  footer p {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  footer a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    color: #ccc;
+  }

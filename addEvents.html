@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>SDC CIT</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <!-- Favicons -->
+    <link href="assets/img/logo.png" rel="icon" />
+    
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Cardo:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Main CSS File -->
+    <link href="assets/css/main.css" rel="stylesheet" />
+  </head>
+
+  <body class="contact-page">
+    <header id="header" class="header d-flex align-items-center sticky-top">
+      <div
+        class="container-fluid position-relative d-flex align-items-center justify-content-between"
+      >
+        <a
+          href="index.html"
+          class="logo d-flex align-items-center me-auto me-xl-0"
+        >
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <img src="assets/img/logo.png" alt="" />
+          <h1 class="sitename">SDC CIT</h1>
+        </a>
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li>
+              <a href="home.html">Home<br /></a>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="members.html">Members</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+        <div class="header-social-links">
+          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="https://www.instagram.com/sdc_cit" target="_blank"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit" target="_blank"
+            ><i class="bi bi-linkedin"></i
+          ></a>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <h2 class="text-center">Admin Dashboard</h2>
+        <div class="admin-form">
+          <input
+            type="text"
+            id="eventName"
+            class="form-control"
+            placeholder="Event Name"
+            required
+          />
+          <textarea
+            id="eventDescription"
+            class="form-control"
+            placeholder="Event Description"
+            required
+          ></textarea>
+          <input type="date" id="eventDate" class="form-control" required />
+          <input
+            type="url"
+            id="registerLink"
+            class="form-control"
+            placeholder="Registration Link (optional)"
+          />
+          <input
+            type="file"
+            id="eventImage"
+            class="form-control"
+            accept="image/*"
+            required
+          />
+          <button class="btn btn-primary w-100 mt-3" onclick="addEvent()">
+            Add Event
+          </button>
+        </div>
+
+      <!-- Upcoming Events Section -->
+      <h2>Upcoming Events</h2>
+      <div id="upcomingEvents" class="events-container"></div>
+
+      <!-- Completed Events Section -->
+      <h2>Completed Events</h2>
+      <div id="completedEvents" class="events-container"></div>
+
+      <!-- Image Modal -->
+      <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img id="modalImage" src="" alt="Enlarged Event" />
+        <h3 id="modalTitle"></h3>
+        <p id="modalDesc"></p>
+      </div>
+
+      <script>
+        async function addEvent() {
+          const title = document.getElementById("eventName").value.trim(); // 🔥 Fix: Change `name` to `title`
+          const description = document
+            .getElementById("eventDescription")
+            .value.trim();
+          const date = document.getElementById("eventDate").value.trim();
+          const link = document.getElementById("registerLink").value.trim();
+          const imageFile = document.getElementById("eventImage").files[0];
+
+          if (!title || !description || !date || !imageFile) {
+            alert("⚠️ Please fill in all required fields!");
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.readAsDataURL(imageFile);
+
+          reader.onload = async function () {
+            const imageUrl = reader.result; // Convert image to Base64
+
+            const newEvent = {
+              title,
+              description,
+              date,
+              link,
+              image: imageUrl,
+            };
+
+            try {
+              const response = await fetch("http://localhost:5000/add-event", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newEvent),
+              });
+
+              if (!response.ok) {
+                throw new Error(`Server Error: ${response.status}`);
+              }
+
+              const result = await response.json();
+
+              if (result.success) {
+                alert("✅ Event added successfully!");
+                fetchEvents(); // Refresh events list dynamically
+
+                // Clear input fields
+                document.getElementById("eventName").value = "";
+                document.getElementById("eventDescription").value = "";
+                document.getElementById("eventDate").value = "";
+                document.getElementById("registerLink").value = "";
+                document.getElementById("eventImage").value = "";
+              } else {
+                alert("❌ Failed to add event: " + result.message);
+              }
+            } catch (error) {
+              console.error("Error adding event:", error);
+            }
+          };
+        }
+
+        async function deleteEvent(button, title) {
+          // Handle undefined title by setting it to null
+          if (!title) {
+            console.warn(
+              "⚠️ Event title is undefined! Deleting unnamed events..."
+            );
+            title = null; // Will trigger deleteMany() on the server
+          }
+
+          try {
+            const response = await fetch("http://localhost:5000/delete-event", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ title }),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+              alert("✅ Event deleted successfully!");
+              location.reload();
+            } else {
+              alert("❌ Failed to delete event: " + result.message);
+            }
+          } catch (error) {
+            console.error("Error deleting event:", error);
+          }
+        }
+        async function fetchEvents() {
+          try {
+            const response = await fetch("http://localhost:5000/events");
+            if (!response.ok) {
+              throw new Error(`Failed to fetch events: ${response.status}`);
+            }
+            const events = await response.json();
+            displayEvents(events);
+          } catch (error) {
+            console.error("Error fetching events:", error);
+          }
+        }
+
+        function displayEvents(events) {
+          const upcomingContainer = document.getElementById("upcomingEvents");
+          const completedContainer = document.getElementById("completedEvents");
+
+          if (!upcomingContainer || !completedContainer) {
+            console.error("⚠️ Missing event containers in HTML!");
+            return;
+          }
+
+          upcomingContainer.innerHTML = ""; // Clear previous events
+          completedContainer.innerHTML = "";
+
+          const today = new Date(); // Get today's date
+          today.setHours(0, 0, 0, 0); // Remove time to compare only dates
+
+          events.forEach((event) => {
+            const eventDate = new Date(event.date);
+            eventDate.setHours(0, 0, 0, 0); // Remove time
+
+            const eventDiv = document.createElement("div");
+            eventDiv.className = "event";
+            eventDiv.innerHTML = `
+      <img src="${event.image}" alt="${event.title}" onclick="openModal('${
+              event.image
+            }', '${event.title}', '${event.description}')">
+      <h3>${event.title}</h3>
+      <p>${event.description}</p>
+      <p><strong>Date:</strong> ${eventDate.toLocaleDateString()}</p>
+      <button class='delete-btn' onclick='deleteEvent(this, "${
+                  event.title
+                }")'>Delete</button>
+            `;
+
+            // 🔥 Categorize event based on date
+            if (eventDate >= today) {
+              upcomingContainer.appendChild(eventDiv); // Add to Upcoming Events
+            } else {
+              completedContainer.appendChild(eventDiv); // Add to Completed Events
+            }
+          });
+        }
+
+        function openModal(imageSrc, title, description) {
+          const modal = document.getElementById("imageModal");
+          const modalImg = document.getElementById("modalImage");
+          const modalTitle = document.getElementById("modalTitle");
+          const modalDesc = document.getElementById("modalDesc");
+
+          modal.style.display = "flex";
+          modalImg.src = imageSrc;
+          modalTitle.innerText = title;
+          modalDesc.innerText = description;
+        }
+
+        function closeModal() {
+          document.getElementById("imageModal").style.display = "none";
+        }
+
+        fetchEvents();
+      </script>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="container">
+        <div class="copyright text-center">
+          <p>
+            © <span>Copyright</span>
+            <strong class="px-1 sitename">SDC CIT</strong>
+            <span>All Rights Reserved</span>
+          </p>
+        </div>
+        <div class="social-links d-flex justify-content-center">
+          <a href=""><i class="bi bi-twitter-x"></i></a>
+          <a href=""><i class="bi bi-facebook"></i></a>
+          <a href="https://www.instagram.com/sdc_cit" target="_blank"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit" target="_blank"
+            ><i class="bi bi-linkedin"></i
+          ></a>
+        </div>
+        <div class="credits">Designed by SDC CIT</div>
+      </div>
+    </footer>
+
+    <!-- Scroll Top -->
+    <a
+      href="#"
+      id="scroll-top"
+      class="scroll-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <!-- Preloader -->
+    <div id="preloader">
+      <div class="line"></div>
+    </div>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
