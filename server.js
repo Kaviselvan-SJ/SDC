@@ -172,16 +172,18 @@ app.post('/add-member', async (req, res) => {
         }
 
         // Get the highest position and increment it
-        const lastMember = await Member.findOne().sort('-position');
-        const newPosition = lastMember ? lastMember.position + 1 : 1;
+        // Get the highest order and increment it
+        const lastMember = await Member.findOne().sort('-order');
+        const newOrder = lastMember ? lastMember.order + 1 : 0;
 
         const newMember = new Member({
-            name,
-            department,
-            year,
-            photo,
-            position: newPosition
+        name,
+        department,
+        year,
+        photo,
+        order: newOrder
         });
+
 
         await newMember.save();
         res.json({ success: true, message: "✅ Member added successfully!" });
