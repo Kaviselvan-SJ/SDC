@@ -176,7 +176,7 @@
 
           async function loadEventCarouselImages() {
             try {
-              const res = await fetch("http://localhost:3000/event-images"); // Adjust port if needed
+              const res = await fetch("https://sdc-yjpb.onrender.com/event-images"); // Adjust port if needed
               const images = await res.json();
 
               images.forEach((event) => {
