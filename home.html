@@ -86,12 +86,11 @@
               data-aos-delay="100"
             >
               <h2>
-                <span>I'm </span><span class="underlight">Jenny Wilson</span> a
-                Professional<span> Photographer from New York City</span>
+                <span>Big things happen when students come together—let's connect!</span>
               </h2>
               <p>
-                Blanditiis praesentium aliquam illum tempore incidunt debitis
-                dolorem magni est deserunt sed qui libero. Qui voluptas amet.
+                BWe're more than just a club—
+                we're a community of creators, thinkers, and doers. Got something on your mind? Let's talk.
               </p>
             </div>
           </div>
@@ -182,6 +181,50 @@
         }
 
         fetchEvents();
+      </script>
+      <!-- Event Image Carousel -->
+      <section id="event-carousel" class="event-carousel section">
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <h2 class="text-center mb-4">Events Gallery</h2>
+          <div class="carousel-wrapper">
+            <div id="eventImageTrack" class="image-track">
+              <!-- Images will be appended here -->
+            </div>
+          </div>
+        </div>
+      </section>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const imageTrack = document.getElementById("eventImageTrack");
+
+          async function loadEventCarouselImages() {
+            try {
+              const res = await fetch("http://localhost:3000/event-images"); // Adjust port if needed
+              const images = await res.json();
+
+              images.forEach((event) => {
+                if (event.image) {
+                  const img = document.createElement("img");
+                  img.src = event.image;
+                  imageTrack.appendChild(img);
+                }
+              });
+
+              // Duplicate images for seamless infinite scroll
+              images.forEach((event) => {
+                if (event.image) {
+                  const img = document.createElement("img");
+                  img.src = event.image;
+                  imageTrack.appendChild(img);
+                }
+              });
+            } catch (error) {
+              console.error("Failed to load event images:", error);
+            }
+          }
+
+          loadEventCarouselImages();
+        });
       </script>
     </main>
 
