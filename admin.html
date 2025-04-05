@@ -99,13 +99,13 @@
           const correctPassword = "admin123"; // Change this to the actual admin password
           
           if (password === correctPassword) {
-            window.location.href = "dashBoard.html"; // Redirect to add events page
+            sessionStorage.setItem("isAdmin", "true"); // Save session info
+            window.location.href = "dashBoard.html";   // Redirect to dashboard
           } else {
             document.getElementById("errorMessage").style.display = "block";
           }
         });
       </script>
-      
 
     <footer id="footer" class="footer">
       <div class="container">

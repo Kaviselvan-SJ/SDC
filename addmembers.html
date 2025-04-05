@@ -36,6 +36,11 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet" />
+    <script>
+      if (sessionStorage.getItem("isAdmin") !== "true") {
+        window.location.href = "admin.html";
+      }
+    </script>
   </head>
 
   <body class="contact-page">
@@ -181,7 +186,9 @@
         // Fetch members from the backend and display them
         async function fetchMembers() {
           try {
-            const response = await fetch("https://sdc-yjpb.onrender.com/members");
+            const response = await fetch(
+              "https://sdc-yjpb.onrender.com/members"
+            );
             if (!response.ok)
               throw new Error(`Failed to fetch members: ${response.status}`);
 
@@ -216,11 +223,14 @@
             const newMember = { name, department, year, photo: photoUrl };
 
             try {
-              const response = await fetch("https://sdc-yjpb.onrender.com/add-member", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newMember),
-              });
+              const response = await fetch(
+                "https://sdc-yjpb.onrender.com/add-member",
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(newMember),
+                }
+              );
 
               const result = await response.json();
               if (result.success) {
