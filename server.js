@@ -56,6 +56,18 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'));
 });
 
+app.get('/addMembers.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'addMembers.html'));
+  });
+  
+  app.get('/addEvents.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'addEvents.html'));
+  });
+  
+  app.get('/addPhotos.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'addPhotos.html'));
+  });
+
 
 
 // Route to fetch events
