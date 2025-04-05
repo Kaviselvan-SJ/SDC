@@ -132,25 +132,32 @@ app.post("/delete-event", async (req, res) => {
 
 // Route to fetch members
 // Route to fetch members
-app.get("/members", async (req, res) => {
-    const members = await Member.find().sort({ position: 1 }); // ✅ Consistent
-    res.json(members);
-});
+app.get('/members', async (req, res) => {
+    try {
+      const members = await Member.find({}).sort({ order: 1 });
+      res.json(members);
+    } catch (error) {
+      console.error("Error fetching members:", error);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  });
+  
 
 // Backend: update-order endpoint
-app.post("/update-order", async (req, res) => {
+app.post('/update-order', async (req, res) => {
+    const { orderedIds } = req.body;
+  
     try {
-        const { orderedIds } = req.body;
-
-        for (let i = 0; i < orderedIds.length; i++) {
-            await Member.findByIdAndUpdate(orderedIds[i], { position: i }); // ✅ Use position
-        }
-
-        res.json({ success: true });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+      for (let i = 0; i < orderedIds.length; i++) {
+        await Member.updateOne({ _id: orderedIds[i] }, { $set: { order: i } });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error updating order:", error);
+      res.status(500).json({ success: false, message: "Server error" });
     }
-});
+  });
+  
 
   
 

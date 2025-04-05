@@ -176,9 +176,6 @@
 
             const members = await response.json();
             displayMembers(members);
-
-            // Load the correct order after members are displayed
-            setTimeout(loadMembers, 100);
           } catch (error) {
             console.error("Error fetching members:", error);
           }
@@ -233,18 +230,6 @@
           document.getElementById("memberPhoto").value = "";
         }
 
-        function loadMembers() {
-          const savedOrder = JSON.parse(localStorage.getItem("memberOrder"));
-          if (!savedOrder) return;
-
-          savedOrder.forEach((id) => {
-            const memberElement = document.getElementById(`member-${id}`);
-            if (memberElement) {
-              memberContainer.appendChild(memberElement);
-            }
-          });
-        }
-
         // Display members in the DOM
         function displayMembers(members) {
           memberContainer.innerHTML = ""; // Clear previous members
@@ -269,9 +254,6 @@
 
             memberContainer.appendChild(memberDiv);
           });
-
-          // Load saved order from localStorage after rendering members
-          loadMembers();
         }
 
         // Delete a member
