@@ -37,8 +37,15 @@ const memberSchema = new mongoose.Schema({
     position: { type: Number, required: true, unique: true } 
 });
 
-const Member = mongoose.model('Member', memberSchema);
+const eventImageSchema = new mongoose.Schema({
+    image: { type: String, required: true },
+    uploadedAt: { type: Date, default: Date.now }
+});
 
+const EventImage = mongoose.model('EventImage', eventImageSchema);
+
+
+const Member = mongoose.model('Member', memberSchema);
 
 
 const Event = mongoose.model('Event', eventSchema);
@@ -218,6 +225,46 @@ app.post("/delete-member", async (req, res) => {
     }
 });
 
+// Upload event image only
+app.post('/add-event-image', async (req, res) => {
+    try {
+        const { image } = req.body;
+        if (!image) return res.status(400).json({ success: false, message: "⚠️ No image provided!" });
+
+        const newImage = new EventImage({ image });
+        await newImage.save();
+
+        res.json({ success: true, message: "✅ Image uploaded successfully!" });
+    } catch (error) {
+        console.error("Error uploading image:", error);
+        res.status(500).json({ success: false, message: "❌ Failed to upload image", error });
+    }
+});
+
+// Get all event images
+app.get('/event-images', async (req, res) => {
+    try {
+        const images = await EventImage.find().sort('-uploadedAt');
+        res.json(images);
+    } catch (error) {
+        res.status(500).json({ success: false, message: "❌ Failed to fetch images", error });
+    }
+});
+
+// Delete event image
+app.post('/delete-event-image', async (req, res) => {
+    const { id } = req.body;
+    if (!id) return res.status(400).json({ success: false, message: "Image ID required!" });
+
+    try {
+        const deleted = await EventImage.findByIdAndDelete(id);
+        if (!deleted) return res.status(404).json({ success: false, message: "❌ Image not found" });
+
+        res.json({ success: true, message: "✅ Image deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "❌ Error deleting image", error });
+    }
+});
 
 
 // Start the server

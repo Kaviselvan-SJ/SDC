@@ -36,6 +36,12 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet" />
+
+    <script>
+      if (sessionStorage.getItem("isAdmin") !== "true") {
+        window.location.href = "admin.html";
+      }
+    </script>
   </head>
 
   <body class="services-page">
@@ -66,7 +72,7 @@
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
 
-        <div class="header-social-links">
+        <div class="header-social-links d-none d-xl-flex">
           <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
           <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
           <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
@@ -75,14 +81,124 @@
       </div>
     </header>
 
-    <main class="main"></main>
+    <main
+      class="main py-5"
+      style="min-height: 100vh; background-color: #000; color: #fff"
+    >
+      <div class="container">
+        <h2 class="text-center mb-4">Upload Event Images</h2>
+
+        <!-- Upload Form and Image Gallery Layout -->
+        <div
+          class="d-flex justify-content-center flex-column align-items-center gap-5"
+        >
+          <!-- Upload Form -->
+          <form
+            id="imageUploadForm"
+            class="admin-form"
+            style="width: 100%; max-width: 350px"
+          >
+            <input
+              type="file"
+              id="eventImage"
+              class="form-control mb-3"
+              accept="image/*"
+              required
+            />
+            <button type="submit" class="btn btn-primary w-100">Upload</button>
+          </form>
+        </div>
+
+        <!-- 🛠 Image Gallery Heading (moved outside flexbox) -->
+        <h2 class="text-start mb-3">Image Gallery</h2>
+
+        <!-- Image Gallery -->
+        <div
+          id="imageGallery"
+          class="d-flex flex-wrap justify-content-center gap-3"
+          style="max-width: 800px"
+        ></div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("imageUploadForm");
+        const gallery = document.getElementById("imageGallery");
+
+        // Load only event images
+        async function loadImages() {
+          const res = await fetch("/event-images");
+          const events = await res.json();
+
+          gallery.innerHTML = "";
+          events.forEach((event) => {
+            if (event.image) {
+              const container = document.createElement("div");
+              container.style.position = "relative";
+              container.innerHTML = `
+                <img src="${event.image}" style="width: 200px; height: auto; border: 1px solid #ccc;" />
+                <button onclick="deleteImage('${event._id}')" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; padding: 4px 8px; cursor: pointer;">X</button>
+              `;
+              gallery.appendChild(container);
+            }
+          });
+        }
+
+        // Upload image
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const file = document.getElementById("eventImage").files[0];
+          if (!file) return alert("Please select an image!");
+
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            const base64Image = reader.result;
+
+            const res = await fetch("/add-event-image", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image: base64Image }),
+            });
+
+            const data = await res.json();
+            if (data.success) {
+              form.reset();
+              loadImages();
+            } else {
+              alert(data.message || "Upload failed");
+            }
+          };
+
+          reader.readAsDataURL(file);
+        });
+
+        // Delete image
+        window.deleteImage = async (id) => {
+          const res = await fetch("/delete-event-image", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+          });
+
+          const data = await res.json();
+          if (data.success) {
+            loadImages();
+          } else {
+            alert(data.message || "Failed to delete image");
+          }
+        };
+
+        loadImages();
+      });
+    </script>
 
     <footer id="footer" class="footer">
       <div class="container">
         <div class="copyright text-center">
           <p>
             © <span>Copyright</span>
-            <strong class="px-1 sitename">PhotoFolio</strong>
+            <strong class="px-1 sitename">SDC CIT</strong>
             <span>All Rights Reserved</span>
           </p>
         </div>
@@ -92,16 +208,9 @@
           <a href=""><i class="bi bi-instagram"></i></a>
           <a href=""><i class="bi bi-linkedin"></i></a>
         </div>
-        <div class="credits">
-          <!-- All the links in the footer should remain intact. -->
-          <!-- You can delete the links only if you've purchased the pro version. -->
-          <!-- Licensing information: https://bootstrapmade.com/license/ -->
-          <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-        </div>
+        <div class="credits">Designed by SDC CIT</div>
       </div>
     </footer>
-
     <!-- Scroll Top -->
     <a
       href="#"
