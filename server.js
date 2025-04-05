@@ -131,14 +131,28 @@ app.post("/delete-event", async (req, res) => {
 });
 
 // Route to fetch members
-app.get('/members', async (req, res) => {
+// Route to fetch members
+app.get("/members", async (req, res) => {
+    const members = await Member.find().sort({ position: 1 }); // ✅ Consistent
+    res.json(members);
+});
+
+// Backend: update-order endpoint
+app.post("/update-order", async (req, res) => {
     try {
-        const members = await Member.find().sort('position'); // Sorted by position
-        res.json(members);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching members", error });
+        const { orderedIds } = req.body;
+
+        for (let i = 0; i < orderedIds.length; i++) {
+            await Member.findByIdAndUpdate(orderedIds[i], { position: i }); // ✅ Use position
+        }
+
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
     }
 });
+
+  
 
 
 // Route to upload a new member
@@ -171,32 +185,7 @@ app.post('/add-member', async (req, res) => {
     }
 });
 
-
-app.post('/update-member-order', async (req, res) => {
-    try {
-        const { orderedMembers } = req.body; // [{ _id: "123", position: 1 }, { _id: "456", position: 2 }]
-
-        if (!orderedMembers || !Array.isArray(orderedMembers)) {
-            return res.status(400).json({ success: false, message: "⚠️ Invalid data format" });
-        }
-
-        // Update each member's position
-        const bulkOps = orderedMembers.map(member => ({
-            updateOne: {
-                filter: { _id: member._id },
-                update: { position: member.position }
-            }
-        }));
-
-        await Member.bulkWrite(bulkOps);
-        res.json({ success: true, message: "✅ Member order updated successfully!" });
-
-    } catch (error) {
-        console.error("Error updating order:", error);
-        res.status(500).json({ success: false, message: "❌ Failed to update order", error });
-    }
-});
-
+  
 
 // Route to delete a member
 app.post("/delete-member", async (req, res) => {

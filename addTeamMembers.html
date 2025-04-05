@@ -72,8 +72,12 @@
         <div class="header-social-links d-none d-xl-flex">
           <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
           <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-          <a href="https://www.instagram.com/sdc_cit" target="_blank" ><i class="bi bi-instagram"></i></a>
-          <a href="https://www.linkedin.com/company/sdc-cit" target="_blank" ><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/sdc_cit" target="_blank"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit" target="_blank"
+            ><i class="bi bi-linkedin"></i
+          ></a>
         </div>
       </div>
     </header>
@@ -128,30 +132,6 @@
 
         const memberContainer = document.getElementById("membersList");
 
-        // Function to store the current order in localStorage
-        function storeOrder() {
-          const orderedMembers = Array.from(
-            document.querySelectorAll(".member-card")
-          ).map((card) => card.id);
-          localStorage.setItem("memberOrder", JSON.stringify(orderedMembers));
-        }
-
-        // Function to load members in saved order
-        function loadMembers() {
-          const savedOrder =
-            JSON.parse(localStorage.getItem("memberOrder")) || [];
-          const members = Array.from(document.querySelectorAll(".member-card"));
-
-          if (savedOrder.length > 0) {
-            // Clear the container and re-append elements in saved order
-            members.forEach((member) => memberContainer.appendChild(member));
-            savedOrder.forEach((memberId) => {
-              const member = document.getElementById(memberId);
-              if (member) memberContainer.appendChild(member);
-            });
-          }
-        }
-
         // Drag Events
         function drag(event) {
           event.dataTransfer.setData("text/plain", event.target.id);
@@ -163,14 +143,21 @@
 
         function drop(event) {
           event.preventDefault();
-
           const draggedId = event.dataTransfer.getData("text/plain");
           const draggedElement = document.getElementById(draggedId);
           const targetElement = event.target.closest(".member-card");
 
           if (targetElement && targetElement !== draggedElement) {
-            memberContainer.insertBefore(draggedElement, targetElement);
-            storeOrder(); // Save the new order
+            const bounding = targetElement.getBoundingClientRect();
+            const offset = event.clientY - bounding.top;
+
+            if (offset > bounding.height / 2) {
+              targetElement.after(draggedElement);
+            } else {
+              targetElement.before(draggedElement);
+            }
+
+            storeOrder();
           }
         }
 
@@ -298,6 +285,21 @@
             }
           } catch (error) {
             console.error("Error deleting member:", error);
+          }
+        }
+        async function storeOrder() {
+          const orderedIds = Array.from(
+            document.querySelectorAll(".member-card")
+          ).map((card) => card.id.replace("member-", ""));
+
+          try {
+            await fetch("https://sdc-yjpb.onrender.com/update-order", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ orderedIds }),
+            });
+          } catch (error) {
+            console.error("Error saving order:", error);
           }
         }
       </script>
