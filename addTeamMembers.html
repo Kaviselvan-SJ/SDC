@@ -233,6 +233,18 @@
           document.getElementById("memberPhoto").value = "";
         }
 
+        function loadMembers() {
+          const savedOrder = JSON.parse(localStorage.getItem("memberOrder"));
+          if (!savedOrder) return;
+
+          savedOrder.forEach((id) => {
+            const memberElement = document.getElementById(`member-${id}`);
+            if (memberElement) {
+              memberContainer.appendChild(memberElement);
+            }
+          });
+        }
+
         // Display members in the DOM
         function displayMembers(members) {
           memberContainer.innerHTML = ""; // Clear previous members
