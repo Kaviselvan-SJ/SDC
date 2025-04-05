@@ -135,7 +135,7 @@ app.get('/members', async (req, res) => {
 
 
 // Route to upload a new member
-app.post('/add-Member', async (req, res) => {
+app.post('/add-member', async (req, res) => {
     try {
         const { name, department, year, photo } = req.body;
 
