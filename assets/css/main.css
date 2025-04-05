@@ -1520,3 +1520,38 @@ h2 {
 .member:active {
   cursor: grabbing;
 }
+
+/*--------------------------------------------------------------
+# Events img animation Section
+--------------------------------------------------------------*/
+
+.carousel-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.image-track {
+  display: flex;
+  gap: 20px;
+  animation: scrollImages 30s linear infinite;
+  width: max-content;
+}
+
+.image-track img {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Keyframe for scrolling */
+@keyframes scrollImages {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

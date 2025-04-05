@@ -159,116 +159,51 @@
       </section>
       <!-- /About Section -->
 
-      <!-- Testimonials Section -->
-      <section id="testimonials" class="testimonials section">
-        <!-- Section Title -->
-        <div class="container section-title" data-aos="fade-up">
-          <h2>Events Gallery</h2>
-        </div>
-        <!-- End Section Title -->
+     <!-- Event Image Carousel -->
+      <section id="event-carousel" class="event-carousel section">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
-          <div class="swiper init-swiper">
-            <script type="application/json" class="swiper-config">
-              {
-                "loop": true,
-                "speed": 600,
-                "autoplay": {
-                  "delay": 5000
-                },
-                "slidesPerView": "auto",
-                "pagination": {
-                  "el": ".swiper-pagination",
-                  "type": "bullets",
-                  "clickable": true
-                },
-                "breakpoints": {
-                  "320": {
-                    "slidesPerView": 1,
-                    "spaceBetween": 40
-                  },
-                  "1200": {
-                    "slidesPerView": 3,
-                    "spaceBetween": 1
-                  }
-                }
-              }
-            </script>
-            <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <div class="testimonial-item">
-                  <div class="profile mt-auto">
-                    <img
-                      src="assets/img/logo.png"
-                      class="testimonial-img"
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </div>
-              <!-- End testimonial item -->
-
-              <div class="swiper-slide">
-                <div class="testimonial-item">
-                  <div class="profile mt-auto">
-                    <img
-                      src="assets/img/logo.png"
-                      class="testimonial-img"
-                      alt=""
-                    />
-      
-                  </div>
-                </div>
-              </div>
-              <!-- End testimonial item -->
-
-              <div class="swiper-slide">
-                <div class="testimonial-item">
-                  <div class="profile mt-auto">
-                    <img
-                      src="assets/img/logo.png"
-                      class="testimonial-img"
-                      alt=""
-                    />
-                  </div>
-                </div>
-              </div>
-              <!-- End testimonial item -->
-
-              <div class="swiper-slide">
-                <div class="testimonial-item">
-
-                  <div class="profile mt-auto">
-                    <img
-                      src="assets/img//logo.png"
-                      class="testimonial-img"
-                      alt=""
-                    />
-                    
-                  </div>
-                </div>
-              </div>
-              <!-- End testimonial item -->
-
-              <div class="swiper-slide">
-                <div class="testimonial-item">
-                  
-                  <div class="profile mt-auto">
-                    <img
-                      src="assets/img/logo.png"
-                      class="testimonial-img"
-                      alt=""
-                    />
-                    
-                  </div>
-                </div>
-              </div>
-              <!-- End testimonial item -->
+          <h2 class="text-center mb-4">Our Events</h2>
+          <div class="carousel-wrapper">
+            <div id="eventImageTrack" class="image-track">
+              <!-- Images will be appended here -->
             </div>
-            <div class="swiper-pagination"></div>
           </div>
         </div>
       </section>
-      <!-- /Testimonials Section -->
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const imageTrack = document.getElementById("eventImageTrack");
+
+          async function loadEventCarouselImages() {
+            try {
+              const res = await fetch("http://localhost:3000/event-images"); // Adjust port if needed
+              const images = await res.json();
+
+              images.forEach((event) => {
+                if (event.image) {
+                  const img = document.createElement("img");
+                  img.src = event.image;
+                  imageTrack.appendChild(img);
+                }
+              });
+
+              // Duplicate images for seamless infinite scroll
+              images.forEach((event) => {
+                if (event.image) {
+                  const img = document.createElement("img");
+                  img.src = event.image;
+                  imageTrack.appendChild(img);
+                }
+              });
+            } catch (error) {
+              console.error("Failed to load event images:", error);
+            }
+          }
+
+          loadEventCarouselImages();
+        });
+      </script>
+
     </main>
 
     <footer id="footer" class="footer">
