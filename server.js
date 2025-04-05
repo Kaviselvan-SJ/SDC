@@ -11,7 +11,7 @@ const MONGO_URI ='mongodb+srv://sjkaviselvan07:jCjFucCyrN1odG3t@sdcdb.ydyz4gl.mo
 
 
 // Enable CORS & Body Parsing
-app.use(cors());
+app.use(cors({ origin: '*' }));
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI)
@@ -46,15 +46,16 @@ const Event = mongoose.model('Event', eventSchema);
 // Serve static files from the current directory
 app.use(express.static(__dirname));
 
+// Increase request body size limit
+app.use(express.json({ limit: "50mb" })); // Allows up to 10MB JSON payload
+app.use(express.urlencoded({ limit: "50mb", extended: true })); // For form data
+
+
 // Route to serve home.html on root
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'));
 });
 
-
-// Increase request body size limit
-app.use(express.json({ limit: "50mb" })); // Allows up to 10MB JSON payload
-app.use(express.urlencoded({ limit: "50mb", extended: true })); // For form data
 
 
 // Route to fetch events
