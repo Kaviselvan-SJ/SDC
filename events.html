@@ -67,6 +67,13 @@
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
+
+        <div class="header-social-links">
+          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        </div>
       </div>
     </header>
 
@@ -119,9 +126,7 @@
       <script>
         async function fetchEvents() {
           try {
-            const response = await fetch(
-              "https://sdc-yjpb.onrender.com/events"
-            );
+            const response = await fetch("https://sdc-yjpb.onrender.com/events");
             if (!response.ok) {
               throw new Error(`Failed to fetch events: ${response.status}`);
             }
