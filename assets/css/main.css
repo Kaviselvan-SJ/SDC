@@ -935,7 +935,6 @@ section,
 # Staff Adviser Section
 --------------------------------------------------------------*/
 
-/* About Section Styling */
 .about .content h2 {
   font-size: 28px;
   font-weight: bold;
@@ -949,53 +948,77 @@ section,
 
 .about .staff-advisors {
   margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
+/* Advisor Card */
 .advisor-box {
   background-color: #1a1919;
-  padding: 20px;
+  height: 300px;
+  width: 300px;
+  padding: 15px;
   border-radius: 10px;
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
 }
 
 .advisor-box:hover {
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* Image occupies 70% of the box */
 .advisor-box img {
-  width: 120px;
-  height: 200px;
+  width: 100px;
+  height: 70%;
   object-fit: cover;
-  margin-bottom: 10px;
   border-radius: 50%;
+  margin-bottom: 10px;
 }
 
+/* Text styling */
 .advisor-box h4 {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   margin-bottom: 5px;
+  text-align: center;
 }
 
 .advisor-box p {
-  font-size: 14px;
-  color: #666;
+  font-size: 13px;
+  color: #ccc;
+  margin: 2px 0;
+  text-align: center;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .advisor-box {
+    width: 300px;
+    height: 300px;
+    padding: 10px;
+  }
+
   .advisor-box img {
     width: 80px;
-    height: 160px;
+    height: 65%;
   }
 
   .advisor-box h4 {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .advisor-box p {
-    font-size: 13px;
+    font-size: 12px;
   }
 }
+
 
 
 /*--------------------------------------------------------------
@@ -1007,7 +1030,7 @@ section,
   gap: 20px;
   justify-content: center;
   margin: 0 auto;
-  padding: 15px;
+  padding: 10px;
 }
 
 /* Member card styling */
@@ -1036,7 +1059,7 @@ section,
   overflow: hidden;
 }
 
-.member-photo {
+.member-page-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1044,16 +1067,6 @@ section,
   border-radius: 12px;
 }
 
-/* Gradient overlay on image */
-.gradient-overlay {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 50%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
-  pointer-events: none;
-  border-radius: 12px;
-}
 
 /* Social icons positioned on image */
 .social-icons-on-image {
@@ -1078,7 +1091,7 @@ section,
 /* Member text details */
 .member-page .details {
   flex-grow: 1;
-  padding: 10px;
+  padding: 15px;
   text-align: center;
 }
 
