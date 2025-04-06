@@ -1555,3 +1555,28 @@ h2 {
     transform: translateX(-50%);
   }
 }
+
+/*--------------------------------------------------------------
+# Members img Section
+--------------------------------------------------------------*/
+.member {
+  position: relative;
+  padding-bottom: 30px; /* space for icons */
+}
+
+.social-icons {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.social-icons a i {
+  font-size: 1.2rem;
+  color: #0077b5; /* LinkedIn blue */
+}
+
+.social-icons a:nth-child(2) i {
+  color: #e4405f; /* Instagram pink */
+}

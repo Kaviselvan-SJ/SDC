@@ -109,6 +109,26 @@
             required
           />
           <input
+            type="text"
+            id="memberRole"
+            class="form-control"
+            placeholder="Role (e.g., Designer)"
+            required
+          />
+          <input
+            type="url"
+            id="memberLinkedIn"
+            class="form-control"
+            placeholder="LinkedIn Profile URL"
+          />
+          <input
+            type="url"
+            id="memberInstagram"
+            class="form-control"
+            placeholder="Instagram Profile URL"
+          />
+
+          <input
             type="file"
             id="memberPhoto"
             class="form-control"
@@ -188,6 +208,13 @@
             .value.trim();
           const year = document.getElementById("memberYear").value.trim();
           const photoFile = document.getElementById("memberPhoto").files[0];
+          const role = document.getElementById("memberRole").value.trim();
+          const linkedin = document
+            .getElementById("memberLinkedIn")
+            .value.trim();
+          const instagram = document
+            .getElementById("memberInstagram")
+            .value.trim();
 
           if (!name || !department || !year || !photoFile) {
             alert("⚠️ Please fill in all required fields!");
@@ -199,7 +226,15 @@
 
           reader.onload = async function () {
             const photoUrl = reader.result;
-            const newMember = { name, department, year, photo: photoUrl };
+            const newMember = {
+              name,
+              department,
+              year,
+              role,
+              linkedin,
+              instagram,
+              photo: photoUrl,
+            };
 
             try {
               const response = await fetch(
@@ -242,15 +277,31 @@
             memberDiv.ondragstart = drag;
 
             memberDiv.innerHTML = `
-            <div class="member">
-                <img src="${member.photo}" alt="${member.name}" class="member-photo">
-                <div class="details">
-                    <h3 class="member-name">${member.name}</h3>
-                    <p><strong></strong> ${member.department} ${member.year}</p>
-                </div>
-                <button class="delete-btn" onclick='deleteMember("${member.name}")'>Delete</button>
+            <div class="member position-relative">
+              <img src="${member.photo}" alt="${
+              member.name
+            }" class="member-photo">
+              <div class="details">
+                <h3 class="member-name">${member.name}</h3>
+                <p>${member.role} - ${member.department}, ${member.year}</p>
+              </div>
+              <div class="social-icons">
+                ${
+                  member.linkedin
+                    ? `<a href="${member.linkedin}" target="_blank"><i class="bi bi-linkedin"></i></a>`
+                    : ""
+                }
+                ${
+                  member.instagram
+                    ? `<a href="${member.instagram}" target="_blank"><i class="bi bi-instagram"></i></a>`
+                    : ""
+                }
+              </div>
+              <button class="delete-btn" onclick='deleteMember("${
+                member.name
+              }")'>Delete</button>
             </div>
-        `;
+          `;
 
             memberContainer.appendChild(memberDiv);
           });

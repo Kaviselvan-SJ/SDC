@@ -33,9 +33,13 @@ const memberSchema = new mongoose.Schema({
     name: { type: String, required: true },
     department: { type: String, required: true },
     year: { type: String, required: true },
+    role: { type: String, required: true },
     photo: { type: String, required: true }, // Base64 or URL
-    position: { type: Number, required: true, unique: true } 
-});
+    linkedin: { type: String },
+    instagram: { type: String },
+    order: { type: Number, default: 0 }
+  });
+  
 
 const eventImageSchema = new mongoose.Schema({
     image: { type: String, required: true },
@@ -165,25 +169,25 @@ app.post('/update-order', async (req, res) => {
 // Route to upload a new member
 app.post('/add-member', async (req, res) => {
     try {
-        const { name, department, year, photo } = req.body;
+        const { name, department, year, role, photo, linkedin, instagram } = req.body;
 
-        if (!name || !department || !year || !photo) {
+        if (!name || !department || !year || !role || !photo) {
             return res.status(400).json({ success: false, message: "⚠️ Missing required fields!" });
         }
 
-        // Get the highest position and increment it
-        // Get the highest order and increment it
         const lastMember = await Member.findOne().sort('-order');
         const newOrder = lastMember ? lastMember.order + 1 : 0;
 
         const newMember = new Member({
-        name,
-        department,
-        year,
-        photo,
-        order: newOrder
+            name,
+            department,
+            year,
+            role,
+            photo,
+            linkedin,
+            instagram,
+            order: newOrder
         });
-
 
         await newMember.save();
         res.json({ success: true, message: "✅ Member added successfully!" });
@@ -193,6 +197,7 @@ app.post('/add-member', async (req, res) => {
         res.status(500).json({ success: false, message: "❌ Failed to add member", error });
     }
 });
+
 
   
 
