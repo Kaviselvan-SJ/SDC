@@ -1001,11 +1001,10 @@ section,
 /*--------------------------------------------------------------
 # members Section
 --------------------------------------------------------------*/
-/* Make the container a flex box to allow easy dragging and dropping */
 .members-page-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* Adjusted the gap to create better spacing between cards */
+  gap: 20px;
   justify-content: center;
   margin: 0 auto;
   padding: 15px;
@@ -1013,36 +1012,76 @@ section,
 
 /* Member card styling */
 .member-page {
-  width: 300px; /* Fixed width */
-  height: 420px; /* Define height to prevent misalignment */
-  text-align: center;
+  width: 300px;
+  height: 420px;
   padding: 10px;
+  text-align: center;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background: #000; /* Set background to black */
-  color: white; /* Text color white */
+  background: #000;
+  color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative; /* Ensure proper positioning for button */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add slight shadow */
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Image styling */
-.member-page img {
-  width: 90%; /* Ensuring the image fits properly */
-  height: 75%; /* Image occupies 60% of card height */
+/* Wrapper for image, gradient & icons */
+.image-wrapper {
+  position: relative;
+  width: 90%;
+  height: 75%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.member-photo {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 10px; /* Rounded corners */
-  margin-bottom: 10px; /* Ensure there's space between image and text */
+  display: block;
+  border-radius: 12px;
 }
 
-/* Member details styling */
+/* Gradient overlay on image */
+.gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+/* Social icons positioned on image */
+.social-icons-on-image {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+
+.social-icons-on-image a {
+  color: white;
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.social-icons-on-image a:hover {
+  transform: scale(1.2);
+}
+
+/* Member text details */
 .member-page .details {
   flex-grow: 1;
-  padding: 0px;
+  padding: 10px;
   text-align: center;
 }
+
 
 
 /*--------------------------------------------------------------
@@ -1455,20 +1494,22 @@ h2 {
 
 
 
-/* Members container for layout */
+/* Make the container a flex box to allow easy dragging and dropping */
 .members-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 20px; /* Adjusted the gap to create better spacing between cards */
   justify-content: center;
   margin: 0 auto;
   padding: 15px;
 }
 
-/* Member card styling */
+
+
 .member {
   width: 300px;
   height: 420px;
+  padding: 10px;
   text-align: center;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -1482,6 +1523,37 @@ h2 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding-bottom: 30px; /* space for delete button */
 }
+
+
+/* Member details styling */
+.member .details {
+  flex-grow: 1;
+  padding: 10px;
+  margin-bottom: 15px; /* Space between details and button */
+  text-align: center;
+}
+
+/* Button styling */
+.member .delete-btn {
+  background-color: #f70505;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  margin-top: auto; /* Push to bottom */
+  cursor: pointer;
+  width: 80%; /* Adjusted width to fill the card */
+  position: absolute;
+  bottom: 10px; /* Keep button at the bottom */
+  left: 50%;
+  transform: translateX(-50%); /* Center the button */
+}
+
+.member:active {
+  cursor: grabbing;
+}
+
 
 .member:active {
   cursor: grabbing;
@@ -1535,28 +1607,8 @@ h2 {
   transform: scale(1.2);
 }
 
-/* Member details */
-.details {
-  flex-grow: 1;
-  padding: 10px;
-  text-align: center;
-}
 
-/* Delete button */
-.delete-btn {
-  background-color: #f70505;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  font-size: 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 80%;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-}
+
 
 /*--------------------------------------------------------------
 # Events img animation Section

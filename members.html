@@ -141,14 +141,22 @@
             memberDiv.id = `member-${member._id}`;
 
             memberDiv.innerHTML = `
-              <div class="member-page">
-                  <img src="${member.photo}" alt="${member.name}" class="member-photo">
-                  <div class="details">
-                      <h3 class="member-name">${member.name}</h3>
-                      <p>${member.department} ${member.year}</p>
-                  </div>
+            <div class="member-page">
+              <div class="image-wrapper">
+                <img src="${member.photo}" alt="${member.name}" class="member-photo" />
+                <div class="gradient-overlay"></div>
+                <div class="social-icons-on-image">
+                  ${member.linkedin ? `<a href="${member.linkedin}" target="_blank"><i class="bi bi-linkedin"></i></a>` : ""}
+                  ${member.instagram ? `<a href="${member.instagram}" target="_blank"><i class="bi bi-instagram"></i></a>` : ""}
+                </div>
               </div>
-            `;
+              <div class="details">
+                <h3 class="member-name">${member.name}</h3>
+                <p>${member.role} - ${member.department}, ${member.year}</p>
+              </div>
+            </div>
+          `;
+
 
             memberContainer.appendChild(memberDiv);
           });
