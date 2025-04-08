@@ -197,7 +197,10 @@
           const academicYear = document
             .getElementById("memberAcademicYear")
             .value.trim();
-          const priority = document.getElementById("memberPriority");
+          const priority = parseInt(
+            document.getElementById("memberPriority").value.trim()
+          );
+
           if (
             !name ||
             !department ||
