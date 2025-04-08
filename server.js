@@ -68,7 +68,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'));
 });
 
-const mongoose = require('mongoose');
 
 // Once the DB is connected
 mongoose.connection.once('open', async () => {
