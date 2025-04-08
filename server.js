@@ -68,6 +68,35 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'));
 });
 
+const mongoose = require('mongoose');
+
+// Once the DB is connected
+mongoose.connection.once('open', async () => {
+  console.log("✅ MongoDB connected.");
+
+  try {
+    // 1. Remove the 'position' field from all documents
+    const updateResult = await mongoose.connection.db.collection('members').updateMany(
+      { position: { $exists: true } },
+      { $unset: { position: "" } }
+    );
+    console.log(`🧹 Removed 'position' from ${updateResult.modifiedCount} documents.`);
+
+    // 2. Drop the index on 'position' if it exists
+    const indexes = await mongoose.connection.db.collection('members').indexes();
+    const positionIndex = indexes.find(index => index.name === 'position_1');
+
+    if (positionIndex) {
+      await mongoose.connection.db.collection('members').dropIndex('position_1');
+      console.log("✅ Dropped unique index on 'position'.");
+    } else {
+      console.log("ℹ️ No 'position' index found.");
+    }
+
+  } catch (err) {
+    console.error("❌ Error cleaning up 'position':", err);
+  }
+});
 
 
 
