@@ -164,7 +164,6 @@
 
         const memberContainer = document.getElementById("membersList");
 
-      
         // Fetch members from the backend and display them
         async function fetchMembers() {
           try {
@@ -195,9 +194,18 @@
           const instagram = document
             .getElementById("memberInstagram")
             .value.trim();
-          const academicYear = document.getElementById("memberAcademicYear").value.trim();
+          const academicYear = document
+            .getElementById("memberAcademicYear")
+            .value.trim();
           const priority = document.getElementById("memberPriority");
-          if (!name || !department || !year || !photoFile || !academicYear || priority) {
+          if (
+            !name ||
+            !department ||
+            !year ||
+            !photoFile ||
+            !academicYear ||
+            priority
+          ) {
             alert("⚠️ Please fill in all required fields!");
             return;
           }
@@ -216,7 +224,7 @@
               instagram,
               photo: photoUrl,
               academicYear,
-              priority
+              priority,
             };
 
             try {
@@ -261,8 +269,6 @@
             const memberDiv = document.createElement("div");
             memberDiv.className = "member-card";
             memberDiv.id = `member-${member._id}`;
-            memberDiv.draggable = true;
-            memberDiv.ondragstart = drag;
 
             memberDiv.innerHTML = `
   <div class="member position-relative">
