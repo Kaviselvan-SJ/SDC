@@ -37,7 +37,8 @@ const memberSchema = new mongoose.Schema({
     photo: { type: String, required: true }, // Base64 or URL
     linkedin: { type: String },
     instagram: { type: String },
-    order: { type: Number, default: 0 }
+    academicYear: { type: String, required: true },
+    priority: { type: Number}
   });
   
 
@@ -134,34 +135,17 @@ app.post("/delete-event", async (req, res) => {
     }
 });
 
-// Route to fetch members
-// Route to fetch members
+
+// Route to fetch members sorted by priority (lower number = higher priority)
 app.get('/members', async (req, res) => {
     try {
-      const members = await Member.find({}).sort({ order: 1 });
-      res.json(members);
+        const members = await Member.find({}).sort({ priority: 1 });
+        res.json(members);
     } catch (error) {
-      console.error("Error fetching members:", error);
-      res.status(500).json({ success: false, message: "Server error" });
+        console.error("Error fetching members:", error);
+        res.status(500).json({ success: false, message: "Server error" });
     }
-  });
-  
-
-// Backend: update-order endpoint
-app.post('/update-order', async (req, res) => {
-    const { orderedIds } = req.body;
-  
-    try {
-      for (let i = 0; i < orderedIds.length; i++) {
-        await Member.updateOne({ _id: orderedIds[i] }, { $set: { order: i } });
-      }
-      res.json({ success: true });
-    } catch (error) {
-      console.error("Error updating order:", error);
-      res.status(500).json({ success: false, message: "Server error" });
-    }
-  });
-  
+});
 
   
 
@@ -169,14 +153,15 @@ app.post('/update-order', async (req, res) => {
 // Route to upload a new member
 app.post('/add-member', async (req, res) => {
     try {
-        const { name, department, year, role, photo, linkedin, instagram } = req.body;
+        const { name, department, year, role, photo, linkedin, instagram,academicYear,priority} = req.body;
 
         if (!name || !department || !year || !role || !photo) {
             return res.status(400).json({ success: false, message: "⚠️ Missing required fields!" });
         }
 
-        const lastMember = await Member.findOne().sort('-order');
-        const newOrder = lastMember ? lastMember.order + 1 : 0;
+        if (priority === undefined || isNaN(priority)) {
+            return res.status(400).json({ success: false, message: "⚠️ Invalid priority value!" });
+        }
 
         const newMember = new Member({
             name,
@@ -186,7 +171,8 @@ app.post('/add-member', async (req, res) => {
             photo,
             linkedin,
             instagram,
-            order: newOrder
+            academicYear,
+            priority
         });
 
         await newMember.save();
@@ -216,11 +202,6 @@ app.post("/delete-member", async (req, res) => {
 
         await Member.deleteOne({ _id: memberToDelete._id });
 
-        // Shift positions of remaining members
-        await Member.updateMany(
-            { position: { $gt: memberToDelete.position } },
-            { $inc: { position: -1 } }
-        );
 
         res.json({ success: true, message: "✅ Member deleted successfully" });
     } catch (error) {

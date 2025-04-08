@@ -127,6 +127,18 @@
             class="form-control"
             placeholder="Instagram Profile URL"
           />
+          <input
+            type="text"
+            id="memberAcademicYear"
+            class="form-control"
+            placeholder="2024-2025"
+          />
+          <input
+            type="number"
+            id="memberPriority"
+            class="form-control"
+            placeholder="1"
+          />
 
           <input
             type="file"
@@ -152,39 +164,7 @@
 
         const memberContainer = document.getElementById("membersList");
 
-        // Drag Events
-        function drag(event) {
-          event.dataTransfer.setData("text/plain", event.target.id);
-        }
-
-        function allowDrop(event) {
-          event.preventDefault();
-        }
-
-        function drop(event) {
-          event.preventDefault();
-          const draggedId = event.dataTransfer.getData("text/plain");
-          const draggedElement = document.getElementById(draggedId);
-          const targetElement = event.target.closest(".member-card");
-
-          if (targetElement && targetElement !== draggedElement) {
-            const bounding = targetElement.getBoundingClientRect();
-            const offset = event.clientY - bounding.top;
-
-            if (offset > bounding.height / 2) {
-              targetElement.after(draggedElement);
-            } else {
-              targetElement.before(draggedElement);
-            }
-
-            storeOrder();
-          }
-        }
-
-        // Apply the event listeners
-        memberContainer.addEventListener("dragover", allowDrop);
-        memberContainer.addEventListener("drop", drop);
-
+      
         // Fetch members from the backend and display them
         async function fetchMembers() {
           try {
@@ -215,8 +195,9 @@
           const instagram = document
             .getElementById("memberInstagram")
             .value.trim();
-
-          if (!name || !department || !year || !photoFile) {
+          const academicYear = document.getElementById("memberAcademicYear").value.trim();
+          const priority = document.getElementById("memberPriority");
+          if (!name || !department || !year || !photoFile || !academicYear || priority) {
             alert("⚠️ Please fill in all required fields!");
             return;
           }
@@ -234,6 +215,8 @@
               linkedin,
               instagram,
               photo: photoUrl,
+              academicYear,
+              priority
             };
 
             try {
@@ -266,6 +249,8 @@
           document.getElementById("memberLinkedIn").value = "";
           document.getElementById("memberInstagram").value = "";
           document.getElementById("memberRole").value = "";
+          document.getElementById("memberAcademicYear").value = "";
+          document.getElementById("memberPriority").value = "";
         }
 
         // Display members in the DOM
@@ -335,21 +320,6 @@
             }
           } catch (error) {
             console.error("Error deleting member:", error);
-          }
-        }
-        async function storeOrder() {
-          const orderedIds = Array.from(
-            document.querySelectorAll(".member-card")
-          ).map((card) => card.id.replace("member-", ""));
-
-          try {
-            await fetch("https://sdc-yjpb.onrender.com/update-order", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ orderedIds }),
-            });
-          } catch (error) {
-            console.error("Error saving order:", error);
           }
         }
       </script>
