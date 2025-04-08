@@ -3,13 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Events</title>
+    <title>Developers Team</title>
     <meta name="description" content="" />
     <meta name="keywords" content="" />
 
     <!-- Favicons -->
     <link href="assets/img/logo.png" rel="icon" />
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -39,7 +38,7 @@
     <link href="assets/css/main.css" rel="stylesheet" />
   </head>
 
-  <body class="gallery-page">
+  <body class="about-page">
     <header id="header" class="header d-flex align-items-center sticky-top">
       <div
         class="container-fluid position-relative d-flex align-items-center justify-content-between"
@@ -59,8 +58,7 @@
               <a href="home.html">Home<br /></a>
             </li>
             <li><a href="about.html">About</a></li>
-
-            <li><a href="events.html" class="active">Events</a></li>
+            <li><a href="events.html">Events</a></li>
             <li><a href="members.html">Members</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="admin.html">Admin</a></li>
@@ -71,8 +69,12 @@
         <div class="header-social-links d-none d-xl-flex">
           <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
           <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/sdc_cit/" target="_blank"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit/" target="_blank"
+            ><i class="bi bi-linkedin"></i
+          ></a>
         </div>
       </div>
     </header>
@@ -84,11 +86,17 @@
           <div class="container">
             <div class="row d-flex justify-content-center text-center">
               <div class="col-lg-8">
-                <h1>Events</h1>
-                <p class="row gy-4 justify-content-center">
-                  Discover exciting upcoming events and be a part of our
-                  innovation-driven community. Explore the highlights of our
-                  past events that have inspired learning and collaboration.
+                <h1>Developers Team</h1>
+                <p class="py-3">
+                  The Developers Team of the Student Developers Cell (SDC) is
+                  the creative and technical backbone behind all official web
+                  and software initiatives. From designing dynamic websites to
+                  building smart digital solutions, the team leverages modern
+                  technologies to bring ideas to life. Members collaborate on
+                  real-world projects, contribute to open source, and
+                  continuously sharpen their skills through hands-on
+                  development, ensuring a seamless and innovative digital
+                  presence for SDC.
                 </p>
               </div>
             </div>
@@ -97,110 +105,81 @@
         <nav class="breadcrumbs">
           <div class="container">
             <ol>
-              <li><a href="index.html">Home</a></li>
-              <li class="current">Events</li>
+              <li><a href="home.html">Home</a></li>
+              <li class="current">Developers Team</li>
             </ol>
           </div>
         </nav>
       </div>
       <!-- End Page Title -->
+      <!-- Developers Team Title (Breadcrumbs already there) -->
+      <section class="developers-team-section">
+        <div class="container">
+          <h2 class="section-title">Developers Team</h2>
 
-      <div id="eventsContainer"></div>
+          <div class="members-container">
+            <!-- Member Card 1 -->
+            <div class="member-page clean-shadow-card">
+              <div class="image-wrapper">
+                <img
+                  src="assets/img/members/Bhooshitha.jpeg"
+                  class="member-page-img"
+                  alt="Bhooshitha"
+                />
+                <div class="social-icons-on-image">
+                  <a href="#"><i class="bi bi-linkedin"></i></a>
+                  <a href="#"><i class="bi bi-instagram"></i></a>
+                </div>
+              </div>
+              <div class="details">
+                <h3 class="member-name">Bhooshitha</h3>
+                <p>Developer</p>
+                <p>3rd Year MSc</p>
+              </div>
+            </div>
 
-      <!-- Upcoming Events Section -->
-      <h2>Upcoming Events</h2>
-      <div id="upcomingEvents" class="events-container"></div>
+            <!-- Member Card 2 -->
+            <div class="member-page">
+              <div class="image-wrapper">
+                <img
+                  src="assets/img/members/Kaviselvan.jpeg"
+                  class="member-page-img"
+                  alt="Kaviselvan"
+                />
+                <div class="social-icons-on-image">
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                </div>
+              </div>
+              <div class="details">
+                <h3 class="member-name">Kaviselvan</h3>
+                <p>Developer</p>
+                <p>2nd Year BE CSE</p>
+              </div>
+            </div>
 
-      <!-- Completed Events Section -->
-      <h2>Completed Events</h2>
-      <div id="completedEvents" class="events-container"></div>
-
-      <!-- Image Modal -->
-      <div id="imageModal" class="modal">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <img id="modalImage" src="" alt="Enlarged Event" />
-        <h3 id="modalTitle"></h3>
-        <p id="modalDesc"></p>
-      </div>
-
-      <script>
-        async function fetchEvents() {
-          try {
-            const response = await fetch(
-              "https://sdc-yjpb.onrender.com/events"
-            );
-            if (!response.ok) {
-              throw new Error(`Failed to fetch events: ${response.status}`);
-            }
-            const events = await response.json();
-            displayEvents(events);
-          } catch (error) {
-            console.error("Error fetching events:", error);
-          }
-        }
-
-        function displayEvents(events) {
-          const upcomingContainer = document.getElementById("upcomingEvents");
-          const completedContainer = document.getElementById("completedEvents");
-
-          if (!upcomingContainer || !completedContainer) {
-            console.error("⚠️ Missing event containers in HTML!");
-            return;
-          }
-
-          upcomingContainer.innerHTML = ""; // Clear previous events
-          completedContainer.innerHTML = "";
-
-          const today = new Date(); // Get today's date
-          today.setHours(0, 0, 0, 0); // Remove time to compare only dates
-
-          events.forEach((event) => {
-            const eventDate = new Date(event.date);
-            eventDate.setHours(0, 0, 0, 0); // Remove time
-
-            const eventDiv = document.createElement("div");
-            eventDiv.className = "event";
-            eventDiv.innerHTML = `
-      <img src="${event.image}" alt="${event.title}" onclick="openModal('${
-              event.image
-            }', '${event.title}', '${event.description}')">
-      <h3>${event.title}</h3>
-      <p>${event.description}</p>
-      <p><strong>Date:</strong> ${eventDate.toLocaleDateString()}</p>
-      ${
-        eventDate >= today && event.registerLink
-          ? `<a href="${event.registerLink}" target="_blank" class="register-btn">Register Here</a>`
-          : ""
-      }
-    `;
-
-            // 🔥 Categorize event based on date
-            if (eventDate >= today) {
-              upcomingContainer.appendChild(eventDiv); // Add to Upcoming Events
-            } else {
-              completedContainer.appendChild(eventDiv); // Add to Completed Events
-            }
-          });
-        }
-
-        function openModal(imageSrc, title, description) {
-          const modal = document.getElementById("imageModal");
-          const modalImg = document.getElementById("modalImage");
-          const modalTitle = document.getElementById("modalTitle");
-          const modalDesc = document.getElementById("modalDesc");
-
-          modal.style.display = "flex";
-          modalImg.src = imageSrc;
-          modalTitle.innerText = title;
-          modalDesc.innerText = description;
-        }
-
-        function closeModal() {
-          document.getElementById("imageModal").style.display = "none";
-        }
-
-        fetchEvents();
-      </script>
+            <!-- Member Card 3 -->
+            <div class="member-page">
+              <div class="image-wrapper">
+                <img
+                  src="assets/img/members/Nandhidha.jpeg"
+                  class="member-page-img"
+                  alt="Nandhidha"
+                />
+                <div class="social-icons-on-image">
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href=""><i class="bi bi-instagram"></i></a>
+                </div>
+              </div>
+              <div class="details">
+                <h3 class="member-name">Nandhidha</h3>
+                <p>Developer</p>
+                <p>2nd Year MSc AIML</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer id="footer" class="footer">
@@ -215,8 +194,12 @@
         <div class="social-links d-flex justify-content-center">
           <a href=""><i class="bi bi-twitter-x"></i></a>
           <a href=""><i class="bi bi-facebook"></i></a>
-          <a href=""><i class="bi bi-instagram"></i></a>
-          <a href=""><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/sdc_cit/"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit/"
+            ><i class="bi bi-linkedin"></i
+          ></a>
         </div>
         <div class="credits">
           Brought to life by
