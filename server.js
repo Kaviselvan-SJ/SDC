@@ -41,6 +41,7 @@ const memberSchema = new mongoose.Schema({
     priority: { type: Number}
   });
   
+memberSchema.index({ priority: 1 });
 
 const eventImageSchema = new mongoose.Schema({
     image: { type: String, required: true },
@@ -137,7 +138,7 @@ app.post("/delete-event", async (req, res) => {
 // Route to fetch members sorted by priority (lower number = higher priority)
 app.get('/members', async (req, res) => {
     try {
-        const members = await Member.find({}).sort({ priority: 1 });
+        const members = await Member.find({}).sort({ priority: 1 }).allowDiskUse(true);
         res.json(members);
     } catch (error) {
         console.error("Error fetching members:", error);
