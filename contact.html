@@ -98,7 +98,7 @@
         <nav class="breadcrumbs">
           <div class="container">
             <ol>
-              <li><a href="index.html">Home</a></li>
+              <li><a href="home.html">Home</a></li>
               <li class="current">Contact</li>
             </ol>
           </div>
@@ -152,12 +152,21 @@
           </div>
 
           <form
-            action="forms/contact.php"
+            action="https://formsubmit.co/sjkaviselvan2005@gmail.com"
             method="POST"
             class="php-email-form"
             data-aos="fade-up"
             data-aos-delay="300"
           >
+            <!-- FormSubmit Hidden Inputs -->
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="box" />
+            <input
+              type="hidden"
+              name="_next"
+              value="https://sdc-yjpb.onrender.com/contact.html?success=1"
+            />
+
             <div class="row gy-4">
               <div class="col-md-6">
                 <input
@@ -165,7 +174,7 @@
                   name="name"
                   class="form-control"
                   placeholder="Your Name"
-                  required=""
+                  required
                 />
               </div>
 
@@ -175,7 +184,7 @@
                   class="form-control"
                   name="email"
                   placeholder="Your Email"
-                  required=""
+                  required
                 />
               </div>
 
@@ -185,7 +194,7 @@
                   class="form-control"
                   name="subject"
                   placeholder="Subject"
-                  required=""
+                  required
                 />
               </div>
 
@@ -195,21 +204,37 @@
                   name="message"
                   rows="6"
                   placeholder="Message"
-                  required=""
+                  required
                 ></textarea>
               </div>
 
               <div class="col-md-12 text-center">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">
+                <div class="loading" style="display: none">Loading</div>
+                <div class="error-message" style="display: none"></div>
+                <div class="sent-message" style="display: none">
                   Your message has been sent. Thank you!
                 </div>
-
                 <button type="submit">Send Message</button>
               </div>
             </div>
           </form>
+
+          <script>
+            // Show success message if URL contains ?success=1
+            window.addEventListener("DOMContentLoaded", () => {
+              const params = new URLSearchParams(window.location.search);
+              if (params.get("success") === "1") {
+                const successBox = document.querySelector(".sent-message");
+                if (successBox) {
+                  successBox.style.display = "block";
+                }
+                // Optional: clean up the URL so ?success=1 disappears
+                const url = new URL(window.location);
+                url.searchParams.delete("success");
+                window.history.replaceState({}, document.title, url.toString());
+              }
+            });
+          </script>
           <!-- End Contact Form -->
         </div>
       </section>
