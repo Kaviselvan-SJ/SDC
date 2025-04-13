@@ -18,6 +18,8 @@ mongoose.connect(MONGO_URI)
     .then(() => console.log('✅ MongoDB Atlas connected!'))
     .catch(err => console.error('❌ MongoDB connection error:', err));
 
+const compression = require('compression');
+app.use(compression());
 
 // Define Event Schema & Model
 const eventSchema = new mongoose.Schema({
@@ -49,12 +51,11 @@ const eventImageSchema = new mongoose.Schema({
 });
 
 const EventImage = mongoose.model('EventImage', eventImageSchema);
-
-
 const Member = mongoose.model('Member', memberSchema);
-
-
 const Event = mongoose.model('Event', eventSchema);
+
+
+
 
 // Serve static files from the current directory
 app.use(express.static(__dirname));
@@ -138,16 +139,16 @@ app.post("/delete-event", async (req, res) => {
 // Route to fetch members sorted by priority (lower number = higher priority)
 app.get('/members', async (req, res) => {
     try {
-        const members = await Member.find({}).sort({ priority: 1 }).allowDiskUse(true);
+        const members = await Member.find({})
+            .sort({ priority: 1 })
+            .lean() // Improves performance by returning plain JS objects
+            .allowDiskUse(true); // Helps with large datasets in MongoDB
         res.json(members);
     } catch (error) {
         console.error("Error fetching members:", error);
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
-
-  
-
 
 // Route to upload a new member
 app.post('/add-member', async (req, res) => {
