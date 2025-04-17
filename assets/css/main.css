@@ -1,18 +1,7 @@
-/**
-* Template Name: PhotoFolio
-* Template URL: https://bootstrapmade.com/photofolio-bootstrap-photography-website-template/
-* Updated: Aug 07 2024 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
 
-/*--------------------------------------------------------------
-# Font & Color Variables
-# Help: https://bootstrapmade.com/color-system/
---------------------------------------------------------------*/
 /* Fonts */
 :root {
-  --default-font: "Roboto",  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --default-font: "Poppins",  system-ui, -apple-system, "Segoe UI", Poppins, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --heading-font: "Cardo",  sans-serif;
   --nav-font: "Inter",  sans-serif;
 }
@@ -86,6 +75,18 @@ h6 {
   color: var(--heading-color);
   font-family: var(--heading-font);
 }
+
+@media (max-width: 768px) {
+  p.mb-0 {
+    text-align: left;
+    margin-left: 0;
+    padding-left: 0;
+    text-indent: 0;
+    line-height: 1.6;
+  }
+}
+
+
 
 /* PHP Email Form Messages
 ------------------------------*/

@@ -86,7 +86,7 @@
             <div class="row d-flex justify-content-center text-center">
               <div class="col-lg-8">
                 <h1>Get in Touch</h1>
-                <p class="mb-0">
+                <p>
                   Have questions or need assistance?<br />
                   We're just a message away!<br />
                   Fill out the form below, and we'll get back to you soon.
@@ -152,8 +152,7 @@
           </div>
 
           <form
-            action="https://formsubmit.co/sjkaviselvan2005@gmail.com"
-            method="POST"
+            id="contact-form"
             class="php-email-form"
             data-aos="fade-up"
             data-aos-delay="300"
@@ -204,10 +203,15 @@
               </div>
 
               <div class="col-md-12 text-center">
-                <div class="loading" style="display: none">Loading</div>
-                <div class="error-message" style="display: none"></div>
-                <div class="sent-message" style="display: none">
-                  Your message has been sent. Thank you!
+                <div class="loading" style="display: none; color: #da08c8">
+                  Loading...
+                </div>
+                <div
+                  class="error-message"
+                  style="display: none; color: black"
+                ></div>
+                <div class="sent-message" style="display: none; color: black">
+                  ✅ Your message has been sent. Thank you!
                 </div>
                 <button type="submit">Send Message</button>
               </div>
@@ -215,21 +219,46 @@
           </form>
 
           <script>
-            // Show success message if URL contains ?success=1
-            window.addEventListener("DOMContentLoaded", () => {
-              const params = new URLSearchParams(window.location.search);
-              if (params.get("success") === "1") {
-                const successBox = document.querySelector(".sent-message");
-                if (successBox) {
-                  successBox.style.display = "block";
-                }
-                // Optional: clean up the URL so ?success=1 disappears
-                const url = new URL(window.location);
-                url.searchParams.delete("success");
-                window.history.replaceState({}, document.title, url.toString());
-              }
+            const form = document.getElementById("contact-form");
+            const loading = document.querySelector(".loading");
+            const sentMessage = document.querySelector(".sent-message");
+            const errorMessage = document.querySelector(".error-message");
+
+            form.addEventListener("submit", function (e) {
+              e.preventDefault();
+
+              loading.style.display = "block";
+              sentMessage.style.display = "none";
+              errorMessage.style.display = "none";
+
+              const formData = new FormData(form);
+
+              fetch("https://formsubmit.co/ajax/sjkaviselvan2005@gmail.com", {
+                method: "POST",
+                body: formData,
+                headers: {
+                  Accept: "application/json",
+                },
+              })
+                .then((response) => {
+                  loading.style.display = "none";
+                  if (response.ok) {
+                    form.reset();
+                    sentMessage.style.display = "block";
+                  } else {
+                    errorMessage.style.display = "block";
+                    errorMessage.innerText = "❌ Form submission failed.";
+                  }
+                })
+                .catch(() => {
+                  loading.style.display = "none";
+                  errorMessage.style.display = "block";
+                  errorMessage.innerText =
+                    "❌ Network error. Please try again.";
+                });
             });
           </script>
+
           <!-- End Contact Form -->
         </div>
       </section>
@@ -277,7 +306,6 @@
 
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
     <script src="assets/vendor/aos/aos.js"></script>
     <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
     <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>

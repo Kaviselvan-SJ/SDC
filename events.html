@@ -85,7 +85,7 @@
             <div class="row d-flex justify-content-center text-center">
               <div class="col-lg-8">
                 <h1>Events</h1>
-                <p>
+                <p class="mb-0">
                   Discover exciting upcoming events and be a part of our
                   innovation-driven community. Explore the highlights of our
                   past events that have inspired learning and collaboration.
@@ -166,7 +166,7 @@
             }', '${event.title}', '${event.description}')">
       <h3>${event.title}</h3>
       <p>${event.description}</p>
-      <p><strong>Date:</strong> ${eventDate.toLocaleDateString()}</p>
+      <p><strong>Date:</strong> ${formatCustomDate(eventDate)}</p>
       ${
         eventDate >= today && event.registerLink
           ? `<a href="${event.registerLink}" target="_blank" class="register-btn">Register Here</a>`
@@ -200,6 +200,13 @@
         }
 
         fetchEvents();
+
+        function formatCustomDate(date) {
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = date.toLocaleString("default", { month: "short" });
+          const year = date.getFullYear();
+          return `${day}-${month}-${year}`;
+        }
       </script>
     </main>
 

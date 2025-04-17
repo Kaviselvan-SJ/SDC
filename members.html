@@ -38,6 +38,29 @@
     <link href="assets/css/main.css" rel="stylesheet" />
   </head>
 
+  <style>
+    .spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #da08c8; /* custom color */
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 0.8s linear infinite;
+      margin: auto;
+      margin-top: -20px; /* move it slightly above */
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
   <body class="services-page">
     <header id="header" class="header d-flex align-items-center sticky-top">
       <div
@@ -83,7 +106,7 @@
             <div class="row d-flex justify-content-center text-center">
               <div class="col-lg-8">
                 <h1>Members</h1>
-                <p >
+                <p class="mb-0">
                   Meet our amazing team of innovators and problem-solvers, each
                   bringing unique skills and passion to the table. Together, we
                   strive to create impactful solutions and drive meaningful
@@ -110,6 +133,10 @@
         <div id="membersList" class="members-page-container"></div>
       </div>
 
+      <div id="loadingSpinner" style="text-align: center; margin-top: 20px">
+        <div class="spinner"></div>
+      </div>
+
       <script>
         document.addEventListener("DOMContentLoaded", () => {
           fetchMembers();
@@ -119,6 +146,9 @@
 
         // Fetch members from the backend and display them
         async function fetchMembers() {
+          const spinner = document.getElementById("loadingSpinner");
+          spinner.style.display = "block"; // Show spinner
+
           try {
             const response = await fetch(
               "https://sdc-yjpb.onrender.com/members"
@@ -130,6 +160,8 @@
             displayMembers(members);
           } catch (error) {
             console.error("Error fetching members:", error);
+          } finally {
+            spinner.style.display = "none"; // Hide spinner after loading
           }
         }
 

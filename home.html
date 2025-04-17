@@ -14,8 +14,8 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Cardo:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-      rel="stylesheet"1
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Cardo:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
     />
 
     <!-- Vendor CSS Files -->
@@ -86,11 +86,14 @@
               data-aos-delay="100"
             >
               <h2>
-                <span>Big things happen when students come together—let's connect!</span>
+                <span
+                  >Big things happen when students come together—let's
+                  connect!</span
+                >
               </h2>
-              <p >
-                We're more than just a club—
-                we're a community of creators, thinkers, and doers. Got something on your mind? Let's talk.
+              <p class="mb-0">
+                We're more than just a club— we're a community of creators,
+                thinkers, and doers. Got something on your mind? Let's talk.
               </p>
             </div>
           </div>
@@ -113,7 +116,9 @@
       <script>
         async function fetchEvents() {
           try {
-            const response = await fetch("https://sdc-yjpb.onrender.com/events");
+            const response = await fetch(
+              "https://sdc-yjpb.onrender.com/events"
+            );
             if (!response.ok) {
               throw new Error(`Failed to fetch events: ${response.status}`);
             }
@@ -149,7 +154,7 @@
             }', '${event.title}', '${event.description}')">
       <h3>${event.title}</h3>
       <p>${event.description}</p>
-      <p><strong>Date:</strong> ${eventDate.toLocaleDateString()}</p>
+      <p><strong>Date:</strong> ${formatCustomDate(eventDate)}</p>
       ${
         eventDate >= today && event.registerLink
           ? `<a href="${event.registerLink}" target="_blank" class="register-btn">Register Here</a>`
@@ -180,6 +185,13 @@
           document.getElementById("imageModal").style.display = "none";
         }
 
+        function formatCustomDate(date) {
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = date.toLocaleString("default", { month: "short" }); // e.g., "Apr"
+          const year = date.getFullYear();
+          return `${day}-${month}-${year}`;
+        }
+
         fetchEvents();
       </script>
       <!-- Event Image Carousel -->
@@ -199,7 +211,9 @@
 
           async function loadEventCarouselImages() {
             try {
-              const res = await fetch("https://sdc-yjpb.onrender.com/event-images"); // Adjust port if needed
+              const res = await fetch(
+                "https://sdc-yjpb.onrender.com/event-images"
+              ); // Adjust port if needed
               const images = await res.json();
 
               images.forEach((event) => {
@@ -244,7 +258,7 @@
           <a href=""><i class="bi bi-linkedin"></i></a>
         </div>
         <div class="credits">
-          Brought to life by 
+          Brought to life by
           <a href="developersTeam.html">Developers Team, SDC</a>
         </div>
       </div>
