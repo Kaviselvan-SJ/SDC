@@ -153,7 +153,7 @@ app.get('/members', async (req, res) => {
 // Route to fetch only basic member info (fast)
 app.get('/members/summary', async (req, res) => {
     try {
-        const members = await Member.find({}, 'name role department priority') // only essential fields
+        const members = await Member.find({}, 'name role department year priority') // only essential fields
             .sort({ priority: 1 })
             .lean();
 
