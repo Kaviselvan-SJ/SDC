@@ -150,6 +150,21 @@ app.get('/members', async (req, res) => {
     }
 });
 
+// Route to fetch only basic member info (fast)
+app.get('/members/summary', async (req, res) => {
+    try {
+        const members = await Member.find({}, 'name role department priority') // only essential fields
+            .sort({ priority: 1 })
+            .lean();
+
+        res.json(members);
+    } catch (error) {
+        console.error("Error fetching member summary:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+
+
 // Route to upload a new member
 app.post('/add-member', async (req, res) => {
     try {
