@@ -140,8 +140,7 @@
       <!-- /Hero Section -->
 
       <div id="eventsContainer"></div>
-      <h2 id="upcomingTitle">Upcoming Events</h2>
-
+      <h2>Upcoming Events</h2>
       <div id="upcomingEvents" class="events-container"></div>
 
       <!-- Image Modal -->
@@ -170,7 +169,7 @@
 
         function displayEvents(events) {
           const upcomingContainer = document.getElementById("upcomingEvents");
-          const upcomingTitle = document.getElementById("upcomingTitle");
+          const upcomingTitle = document.querySelector("h2"); // ✅ Select the <h2> element
 
           if (!upcomingContainer) {
             console.error("⚠️ Missing event containers in HTML!");
@@ -195,11 +194,8 @@
             .sort((a, b) => a.eventDate - b.eventDate); // Nearest date first
 
           // ✅ Toggle title visibility
-          if (upcomingEvents.length === 0) {
-            upcomingTitle.style.display = "none";
-          } else {
-            upcomingTitle.style.display = "block";
-          }
+          upcomingTitle.style.display =
+            upcomingEvents.length > 0 ? "block" : "none";
 
           // Display sorted upcoming events
           upcomingEvents.forEach((event) => {
