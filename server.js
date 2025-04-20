@@ -3,18 +3,24 @@ const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config();
+
 
 const app = express();
-const PORT = 5000;
-const MONGO_URI ='mongodb+srv://sjkaviselvan07:jCjFucCyrN1odG3t@sdcdb.ydyz4gl.mongodb.net/?retryWrites=true&w=majority&appName=SDCDB';
+const PORT = process.env.PORT || 5000;
+const MONGO_URI = process.env.MONGO_URI;
 
 
 
 // Enable CORS & Body Parsing
+app.use(express.json());
 app.use(cors({ origin: '*' }));
 
 // Connect to MongoDB
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
     .then(() => console.log('✅ MongoDB Atlas connected!'))
     .catch(err => console.error('❌ MongoDB connection error:', err));
 

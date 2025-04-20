@@ -15,7 +15,10 @@
     <meta name="author" content="SDC technical team" />
 
     <!-- Open Graph for social media sharing -->
-    <meta property="og:title" content="About Us | Student Development Cell - CIT" />
+    <meta
+      property="og:title"
+      content="About Us | Student Development Cell - CIT"
+    />
     <meta
       property="og:description"
       content="Get to know the Student Development Cell (SDC) at CIT - the driving force behind student empowerment, innovation, and collaboration."
@@ -28,13 +31,18 @@
     <meta property="og:type" content="website" />
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3P4FVHLW17"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-3P4FVHLW17"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-3P4FVHLW17');
+      gtag("config", "G-3P4FVHLW17");
     </script>
 
     <!-- Favicons -->
@@ -47,7 +55,6 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Cardo:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-
 
     <!-- Vendor CSS Files -->
     <link
@@ -100,8 +107,12 @@
         <div class="header-social-links d-none d-xl-flex">
           <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
           <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-          <a href="https://www.instagram.com/sdc_cit/" target="_blank" ><i class="bi bi-instagram"></i></a>
-          <a href="https://www.linkedin.com/company/sdc-cit/" target="_blank" ><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/sdc_cit/" target="_blank"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit/" target="_blank"
+            ><i class="bi bi-linkedin"></i
+          ></a>
         </div>
       </div>
     </header>
@@ -143,7 +154,7 @@
       <section id="about" class="about section">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
           <div class="row gy-4 justify-content-center">
-            <div class="col-lg-5 content">
+            <div class="col-lg-8 content text-center">
               <h2>MISSION</h2>
               <p class="mb-0">
                 The mission of the Student Developers Cell (SDC) is to cultivate
@@ -156,6 +167,7 @@
                 and leadership, preparing its members to excel in the
                 ever-evolving technology landscape.
               </p>
+
               <h2>STAFF ADVISORS</h2>
               <p class="mb-0">
                 The Student Developers Cell (SDC) is supported by a
@@ -168,26 +180,37 @@
               </p>
             </div>
           </div>
-          <!-- Staff Advisors Section -->
 
+          <!-- 👇 Staff Advisor Cards -->
+          <div class="staff-advisors-wrapper">
+            <div class="member-page clean-shadow-card">
+              <div class="staff-image-wrapper">
+                <img
+                  src="assets/img/Staff_advisor_1.png"
+                  class="member-page-img"
+                  alt="Bhooshitha"
+                />
+              </div>
+              <div class="details">
+                <h3 class="member-name">DR.M.Karthiga</h3>
+                <p>MSc AIDS</p>
+              </div>
+            </div>
 
-    <div class="row staff-advisors gy-4 justify-content-center">
-      <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="advisor-box text-center">
-          <img src="assets/img/logo.png" 
-           alt="Staff Advisor 1" 
-           class="img-fluid rounded-circle">
-          <h4>Staff Advisor 1</h4>
-          <p>Designation</p>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6">
-        <div class="advisor-box text-center">
-          <img src="assets/img/logo.png" alt="Staff Advisor 2" class="img-fluid rounded-circle">
-          <h4>Staff Advisor 2</h4>
-          <p>Designation</p>
-        </div>
-      </div>
+            <div class="member-page clean-shadow-card">
+              <div class="staff-image-wrapper">
+                <img
+                  src="assets/img/Staff_advisor_2.jpg"
+                  class="member-page-img"
+                  alt="Dr.D. Kavitha staff advisor"
+                />
+              </div>
+              <div class="details">
+                <h3 class="member-name">Dr.D.Kavitha</h3>
+                <p>MSc AIML</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       <!-- /About Section -->
@@ -200,7 +223,7 @@
         </div>
       </div>
 
-     <!-- Event Image Carousel -->
+      <!-- Event Image Carousel -->
       <section id="event-carousel" class="event-carousel section">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
           <h2 class="text-center mb-4">Events Gallery</h2>
@@ -217,7 +240,9 @@
 
           async function loadEventCarouselImages() {
             try {
-              const res = await fetch("https://sdc-yjpb.onrender.com/event-images"); // Adjust port if needed
+              const res = await fetch(
+                "https://sdc-yjpb.onrender.com/event-images"
+              ); // Adjust port if needed
               const images = await res.json();
 
               images.forEach((event) => {
@@ -244,7 +269,6 @@
           loadEventCarouselImages();
         });
       </script>
-
     </main>
 
     <footer id="footer" class="footer">
@@ -259,11 +283,15 @@
         <div class="social-links d-flex justify-content-center">
           <a href=""><i class="bi bi-twitter-x"></i></a>
           <a href=""><i class="bi bi-facebook"></i></a>
-          <a href="https://www.instagram.com/sdc_cit/"><i class="bi bi-instagram"></i></a>
-          <a href="https://www.linkedin.com/company/sdc-cit/"><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/sdc_cit/"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit/"
+            ><i class="bi bi-linkedin"></i
+          ></a>
         </div>
         <div class="credits">
-          Brought to life by 
+          Brought to life by
           <a href="developersTeam.html">Developers Team, SDC</a>
         </div>
       </div>

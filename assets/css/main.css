@@ -830,70 +830,41 @@ section,
   gap: 20px;
 }
 
-/* Advisor Card */
-.advisor-box {
-  background-color: #1a1919;
-  height: 300px;
-  width: 300px;
-  padding: 15px;
-  border-radius: 10px;
-  transition: 0.3s;
+.staff-advisors-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  color: white;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
-.advisor-box:hover {
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Image occupies 70% of the box */
-.advisor-box img {
-  width: 100px;
-  height: 70%;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-
-/* Text styling */
-.advisor-box h4 {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 5px;
+.staff-page {
+  width: 260px;
   text-align: center;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
 }
 
-.advisor-box p {
-  font-size: 13px;
-  color: #ccc;
-  margin: 2px 0;
-  text-align: center;
+
+
+.staff-image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .advisor-box {
-    width: 300px;
-    height: 300px;
-    padding: 10px;
-  }
 
-  .advisor-box img {
-    width: 80px;
-    height: 65%;
-  }
 
-  .advisor-box h4 {
-    font-size: 15px;
-  }
 
-  .advisor-box p {
-    font-size: 12px;
+@media (max-width: 576px) {
+  .staff-page {
+    width: 90%;
   }
 }
+
 
 .custom-btn {
   background-color: #da08c8;
