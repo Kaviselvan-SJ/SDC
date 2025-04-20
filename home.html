@@ -103,8 +103,12 @@
         <div class="header-social-links d-none d-xl-flex">
           <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
           <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-          <a href="https://www.instagram.com/sdc_cit/" class="instagram"><i class="bi bi-instagram"></i></a>
-          <a href="https://www.linkedin.com/company/sdc-cit/" class="linkedin"><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/sdc_cit/" class="instagram"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit/" class="linkedin"
+            ><i class="bi bi-linkedin"></i
+          ></a>
         </div>
       </div>
     </header>
@@ -136,7 +140,8 @@
       <!-- /Hero Section -->
 
       <div id="eventsContainer"></div>
-      <h2>Upcoming Events</h2>
+      <h2 id="upcomingTitle">Upcoming Events</h2>
+
       <div id="upcomingEvents" class="events-container"></div>
 
       <!-- Image Modal -->
@@ -165,6 +170,7 @@
 
         function displayEvents(events) {
           const upcomingContainer = document.getElementById("upcomingEvents");
+          const upcomingTitle = document.getElementById("upcomingTitle");
 
           if (!upcomingContainer) {
             console.error("⚠️ Missing event containers in HTML!");
@@ -187,6 +193,13 @@
               return event.eventDate >= today;
             })
             .sort((a, b) => a.eventDate - b.eventDate); // Nearest date first
+
+          // ✅ Toggle title visibility
+          if (upcomingEvents.length === 0) {
+            upcomingTitle.style.display = "none";
+          } else {
+            upcomingTitle.style.display = "block";
+          }
 
           // Display sorted upcoming events
           upcomingEvents.forEach((event) => {
@@ -294,8 +307,12 @@
         <div class="social-links d-flex justify-content-center">
           <a href=""><i class="bi bi-twitter-x"></i></a>
           <a href=""><i class="bi bi-facebook"></i></a>
-          <a href="https://www.instagram.com/sdc_cit/"><i class="bi bi-instagram"></i></a>
-          <a href="https://www.linkedin.com/company/sdc-cit/"><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/sdc_cit/"
+            ><i class="bi bi-instagram"></i
+          ></a>
+          <a href="https://www.linkedin.com/company/sdc-cit/"
+            ><i class="bi bi-linkedin"></i
+          ></a>
         </div>
         <div class="credits">
           Brought to life by
