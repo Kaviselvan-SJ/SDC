@@ -61,7 +61,7 @@ const Event = mongoose.model('Event', eventSchema);
 app.use(express.static(__dirname));
 
 // Increase request body size limit
-app.use(express.json({ limit: "50mb" })); // Allows up to 10MB JSON payload
+app.use(express.json({ limit: "50mb" })); // Allows up to 50MB JSON payload
 app.use(express.urlencoded({ limit: "50mb", extended: true })); // For form data
 
 
