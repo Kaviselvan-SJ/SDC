@@ -163,43 +163,47 @@
           }
         }
 
-        function displayEvents(events) {
+        function displayUpcomingEvents(events) {
           const upcomingContainer = document.getElementById("upcomingEvents");
-
           if (!upcomingContainer) {
-            console.error("⚠️ Missing event containers in HTML!");
+            console.error("⚠️ Missing #upcomingEvents container in HTML!");
             return;
           }
 
-          upcomingContainer.innerHTML = ""; // Clear previous events
+          upcomingContainer.innerHTML = ""; // Clear previous content
 
-          const today = new Date(); // Get today's date
-          today.setHours(0, 0, 0, 0); // Remove time to compare only dates
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
 
-          events.forEach((event) => {
-            const eventDate = new Date(event.date);
-            eventDate.setHours(0, 0, 0, 0); // Remove time
+          // Filter and sort upcoming events by nearest date
+          const upcomingEvents = events
+            .map((event) => ({
+              ...event,
+              eventDate: new Date(event.date),
+            }))
+            .filter((event) => {
+              event.eventDate.setHours(0, 0, 0, 0);
+              return event.eventDate >= today;
+            })
+            .sort((a, b) => a.eventDate - b.eventDate); // Nearest first
 
+          upcomingEvents.forEach((event) => {
             const eventDiv = document.createElement("div");
             eventDiv.className = "event";
             eventDiv.innerHTML = `
-      <img src="${event.image}" alt="${event.title}" onclick="openModal('${
+        <img src="${event.image}" alt="${event.title}" onclick="openModal('${
               event.image
             }', '${event.title}', '${event.description}')">
-      <h3>${event.title}</h3>
-      <p>${event.description}</p>
-      <p><strong>Date:</strong> ${formatCustomDate(eventDate)}</p>
-      ${
-        eventDate >= today && event.registerLink
-          ? `<a href="${event.registerLink}" target="_blank" class="register-btn">Register Here</a>`
-          : ""
-      }
-    `;
-
-            // 🔥 Categorize event based on date
-            if (eventDate >= today) {
-              upcomingContainer.appendChild(eventDiv); // Add to Upcoming Events
-            }
+        <h3>${event.title}</h3>
+        <p>${event.description}</p>
+        <p><strong>Date:</strong> ${formatCustomDate(event.eventDate)}</p>
+        ${
+          event.registerLink
+            ? `<a href="${event.registerLink}" target="_blank" class="register-btn">Register Here</a>`
+            : ""
+        }
+      `;
+            upcomingContainer.appendChild(eventDiv);
           });
         }
 

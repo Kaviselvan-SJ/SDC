@@ -186,39 +186,62 @@
             return;
           }
 
-          upcomingContainer.innerHTML = ""; // Clear previous events
+          upcomingContainer.innerHTML = "";
           completedContainer.innerHTML = "";
 
-          const today = new Date(); // Get today's date
-          today.setHours(0, 0, 0, 0); // Remove time to compare only dates
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
 
+          const upcomingEvents = [];
+          const completedEvents = [];
+
+          // Separate and categorize events
           events.forEach((event) => {
             const eventDate = new Date(event.date);
-            eventDate.setHours(0, 0, 0, 0); // Remove time
+            eventDate.setHours(0, 0, 0, 0);
 
-            const eventDiv = document.createElement("div");
-            eventDiv.className = "event";
-            eventDiv.innerHTML = `
+            const eventObj = { ...event, eventDate };
+
+            if (eventDate >= today) {
+              upcomingEvents.push(eventObj);
+            } else {
+              completedEvents.push(eventObj);
+            }
+          });
+
+          // Sort events
+          upcomingEvents.sort((a, b) => a.eventDate - b.eventDate); // Near first
+          completedEvents.sort((a, b) => b.eventDate - a.eventDate); // Recent first
+
+          // Render events
+          upcomingEvents.forEach((event) => {
+            const eventDiv = createEventDiv(event);
+            upcomingContainer.appendChild(eventDiv);
+          });
+
+          completedEvents.forEach((event) => {
+            const eventDiv = createEventDiv(event);
+            completedContainer.appendChild(eventDiv);
+          });
+        }
+
+        function createEventDiv(event) {
+          const eventDiv = document.createElement("div");
+          eventDiv.className = "event";
+          eventDiv.innerHTML = `
       <img src="${event.image}" alt="${event.title}" onclick="openModal('${
-              event.image
-            }', '${event.title}', '${event.description}')">
+            event.image
+          }', '${event.title}', '${event.description}')">
       <h3>${event.title}</h3>
       <p>${event.description}</p>
-      <p><strong>Date:</strong> ${formatCustomDate(eventDate)}</p>
+      <p><strong>Date:</strong> ${formatCustomDate(event.eventDate)}</p>
       ${
-        eventDate >= today && event.registerLink
+        event.eventDate >= new Date() && event.registerLink
           ? `<a href="${event.registerLink}" target="_blank" class="register-btn">Register Here</a>`
           : ""
       }
     `;
-
-            // 🔥 Categorize event based on date
-            if (eventDate >= today) {
-              upcomingContainer.appendChild(eventDiv); // Add to Upcoming Events
-            } else {
-              completedContainer.appendChild(eventDiv); // Add to Completed Events
-            }
-          });
+          return eventDiv;
         }
 
         function openModal(imageSrc, title, description) {
