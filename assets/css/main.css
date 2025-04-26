@@ -77,16 +77,16 @@ h6 {
   font-family: var(--heading-font);
 }
 
-@media (max-width: 768px) {
-  p.mb-0 {
+
+p.mb-0 {
     text-align: justify;
     margin-left: 0;
     margin-right: 0;
     padding-left: 0;
     text-indent: 0;
     line-height: 1.6;
-  }
 }
+
 
 
 
