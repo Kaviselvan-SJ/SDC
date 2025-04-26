@@ -79,8 +79,9 @@ h6 {
 
 @media (max-width: 768px) {
   p.mb-0 {
-    text-align: left;
+    text-align: justify;
     margin-left: 0;
+    margin-right: 0;
     padding-left: 0;
     text-indent: 0;
     line-height: 1.6;
@@ -777,6 +778,24 @@ section,
 }
 
 
+.sdc-heading {
+  width: 100%;
+  text-align: justify; /* force to align both left and right */
+  margin: 0;
+  padding: 0;
+}
+
+.sdc-heading h2 {
+  font-size: 32px; /* Big for "Student Developers Cell" */
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.sdc-heading h2 span {
+  font-size: 18px; /* Smaller text for the description */
+  font-weight: 400;
+}
 
 /*--------------------------------------------------------------
 # About Section
@@ -911,6 +930,12 @@ section,
   align-items: center;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover Effect */
+.member-page:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px #da08c8;
 }
 
 /* Wrapper for image, gradient & icons */
@@ -1409,7 +1434,12 @@ h2 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding-bottom: 30px; /* space for delete button */
 }
-
+/* Hover Effect */
+.member:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px #da08c8;
+  background: #222;
+}
 
 /* Member details styling */
 .member .details {
@@ -1522,3 +1552,46 @@ h2 {
   }
 }
 
+
+/*--------------------------------------------------------------
+# home page - What We Do Section 
+--------------------------------------------------------------*/
+
+#what-we-do .card {
+  transition: all 0.3s ease;
+  background: #111;
+  border: none;
+}
+
+#what-we-do .card img {
+  margin-bottom: 15px;
+  filter: brightness(1.2);
+}
+
+#what-we-do .card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px #da08c8;
+  background: #222;
+}
+#what-we-do .card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+#what-we-do .card-text {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* For screens smaller than 768px (mobile devices) */
+@media (max-width: 768px) {
+  .card {
+    width: 80%; /* Adjust the width as needed */
+    margin: 0 auto; /* Center the card */
+  }
+
+  /* Optionally, you can reduce padding/margin of the card body */
+  .card-body {
+    padding: 15px;
+  }
+}
