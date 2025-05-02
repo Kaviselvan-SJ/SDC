@@ -170,7 +170,6 @@
       <!-- End Page Title -->
       <div class="container">
         <h2>Members</h2>
-        <div id="membersList" class="members-container"></div>
         <!-- 2025-2026 Section -->
         <div class="year-section">
           <div class="year-header" onclick="toggleYear('2025-2026')">
@@ -178,7 +177,7 @@
             <span class="dropdown-icon" id="icon-2025-2026">▲</span>
           </div>
           <div
-            class="year-members members-container"
+            class="year-members"
             id="members-2025-2026"
             style="display: block"
           ></div>
@@ -191,7 +190,7 @@
             <span class="dropdown-icon" id="icon-2024-2025">▼</span>
           </div>
           <div
-            class="year-members members-container"
+            class="year-members"
             id="members-2024-2025"
             style="display: none"
           ></div>
@@ -251,37 +250,43 @@
           const container = document.getElementById(`members-${year}`);
           container.innerHTML = "";
 
+          // Create a wrapper div that uses flexbox
+          const flexContainer = document.createElement("div");
+          flexContainer.className = "members-page-container";
+
           members.forEach((member) => {
             const memberDiv = document.createElement("div");
-            memberDiv.className = "member-card";
+            memberDiv.className = "member-card"; // Optional class; not required for layout
             memberDiv.innerHTML = `
-              <div class="member-page">
-                <div class="image-wrapper">
-                  <img class="member-page-img" src="${
-                    member.photo || "assets/img/logo.png"
-                  }" alt="${member.name}">
-                  <div class="social-icons-on-image">
-                    ${
-                      member.linkedin
-                        ? `<a href="${member.linkedin}" target="_blank"><i class="bi bi-linkedin"></i></a>`
-                        : ""
-                    }
-                    ${
-                      member.instagram
-                        ? `<a href="${member.instagram}" target="_blank"><i class="bi bi-instagram"></i></a>`
-                        : ""
-                    }
-                  </div>
-                </div>
-                <div class="details">
-                  <h3 class="member-name">${member.name}</h3>
-                  <p>${member.role}</p>
-                  <p>${member.department}, ${member.year}</p>
-                </div>
-              </div>
-            `;
-            container.appendChild(memberDiv);
+      <div class="member-page">
+        <div class="image-wrapper">
+          <img class="member-page-img" src="${
+            member.photo || "assets/img/logo.png"
+          }" alt="${member.name}">
+          <div class="social-icons-on-image">
+            ${
+              member.linkedin
+                ? `<a href="${member.linkedin}" target="_blank"><i class="bi bi-linkedin"></i></a>`
+                : ""
+            }
+            ${
+              member.instagram
+                ? `<a href="${member.instagram}" target="_blank"><i class="bi bi-instagram"></i></a>`
+                : ""
+            }
+          </div>
+        </div>
+        <div class="details">
+          <h3 class="member-name">${member.name}</h3>
+          <p>${member.role}</p>
+          <p>${member.department}, ${member.year}</p>
+        </div>
+      </div>
+    `;
+            flexContainer.appendChild(memberDiv);
           });
+
+          container.appendChild(flexContainer);
         }
       </script>
     </main>

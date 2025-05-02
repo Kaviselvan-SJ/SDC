@@ -995,7 +995,26 @@ section,
   object-fit: contain;
 }
 
+.year-header {
+  background: #111;
+  color: #fff;
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  margin-bottom: 5px;
+}
 
+.dropdown-icon {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.year-members {
+  padding: 10px 0 20px;
+}
 
 /*--------------------------------------------------------------
 # Event section
@@ -1514,27 +1533,6 @@ h2 {
 
 .social-icons-on-image a:hover {
   transform: scale(1.2);
-}
-
-.year-header {
-  background: #111;
-  color: #fff;
-  padding: 10px 15px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 6px;
-  margin-bottom: 5px;
-}
-
-.dropdown-icon {
-  font-size: 20px;
-  transition: transform 0.3s ease;
-}
-
-.year-members {
-  padding: 10px 0 20px;
 }
 
 
