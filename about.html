@@ -229,7 +229,7 @@
       <!-- Event Image Carousel -->
       <section id="event-carousel" class="event-carousel section">
         <div class="container" data-aos="fade-up" data-aos-delay="100">
-          <h2 class="text-center mb-4">Events Gallery</h2>
+          <h2 class="text-center mb-4">Members Gallery</h2>
           <div class="carousel-wrapper">
             <div id="eventImageTrack" class="image-track">
               <!-- Images will be appended here -->
@@ -244,7 +244,7 @@
           async function loadEventCarouselImages() {
             try {
               const res = await fetch(
-                "https://sdc-yjpb.onrender.com/event-images"
+                "https://sdc-yjpb.onrender.com/members-images"
               ); // Adjust port if needed
               const images = await res.json();
 
@@ -265,7 +265,7 @@
                 }
               });
             } catch (error) {
-              console.error("Failed to load event images:", error);
+              console.error("Failed to load members images:", error);
             }
           }
 
