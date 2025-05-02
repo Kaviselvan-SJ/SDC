@@ -152,17 +152,24 @@ app.post("/delete-event", async (req, res) => {
 
 // Route to fetch members sorted by priority (lower number = higher priority)
 app.get('/members', async (req, res) => {
+    const { academicYear } = req.query; // Get the academicYear from query params
+
     try {
-        const members = await Member.find({})
+        // If academicYear is provided, filter by it, otherwise fetch all members
+        const query = academicYear ? { academicYear } : {};
+
+        const members = await Member.find(query)
             .sort({ priority: 1 })
             .lean() // Improves performance by returning plain JS objects
             .allowDiskUse(true); // Helps with large datasets in MongoDB
+
         res.json(members);
     } catch (error) {
         console.error("Error fetching members:", error);
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
+
 
 // Route to upload a new member
 app.post('/add-member', async (req, res) => {

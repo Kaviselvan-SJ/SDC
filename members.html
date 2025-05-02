@@ -236,7 +236,7 @@
 
           try {
             const response = await fetch(
-              `https://sdc-yjpb.onrender.com/members?year=${year}`
+              `https://sdc-yjpb.onrender.com/members?academicYear=${year}`
             );
             const members = await response.json();
             displayMembers(members, year);
