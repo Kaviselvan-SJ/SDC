@@ -169,57 +169,97 @@
       </div>
       <!-- End Page Title -->
       <div class="container">
-        <!-- Members List Section -->
         <h2>Members</h2>
-        <div id="membersList" class="members-page-container"></div>
+
+        <!-- 2025-2026 Section -->
+        <div class="year-section">
+          <div class="year-header" onclick="toggleYear('2025-2026')">
+            <h3>2025-2026</h3>
+            <span class="dropdown-icon" id="icon-2025-2026">▲</span>
+          </div>
+          <div
+            class="year-members"
+            id="members-2025-2026"
+            style="display: block"
+          ></div>
+        </div>
+
+        <!-- 2024-2025 Section -->
+        <div class="year-section">
+          <div class="year-header" onclick="toggleYear('2024-2025')">
+            <h3>2024-2025</h3>
+            <span class="dropdown-icon" id="icon-2024-2025">▼</span>
+          </div>
+          <div
+            class="year-members"
+            id="members-2024-2025"
+            style="display: none"
+          ></div>
+        </div>
       </div>
 
-      <!-- Spinner -->
       <div id="loadingSpinner" style="text-align: center; margin-top: 20px">
         <div class="spinner"></div>
       </div>
 
       <script>
-        const memberContainer = document.getElementById("membersList");
+        let activeYear = "2025-2026";
 
         document.addEventListener("DOMContentLoaded", () => {
-          fetchMemberSummary(); // Load summaries first
+          fetchMembersForYear("2025-2026");
         });
 
-        // Step 1: Fetch only basic member info
-        async function fetchMemberSummary() {
+        async function toggleYear(year) {
+          if (year === activeYear) return;
+
+          // Hide current
+          document.getElementById(`members-${activeYear}`).style.display =
+            "none";
+          document.getElementById(`icon-${activeYear}`).textContent = "▼";
+
+          // Show selected
+          document.getElementById(`members-${year}`).style.display = "block";
+          document.getElementById(`icon-${year}`).textContent = "▲";
+
+          // Fetch members if not loaded yet
+          const container = document.getElementById(`members-${year}`);
+          if (container.childElementCount === 0) {
+            fetchMembersForYear(year);
+          }
+
+          activeYear = year;
+        }
+
+        async function fetchMembersForYear(year) {
           const spinner = document.getElementById("loadingSpinner");
           spinner.style.display = "block";
 
           try {
             const response = await fetch(
-              "https://sdc-yjpb.onrender.com/members/summary"
+              `https://sdc-yjpb.onrender.com/members?year=${year}`
             );
             const members = await response.json();
-            displayBasicMembers(members); // render with placeholders
-
-            // Step 2: Now fetch full data
-            fetchFullMemberDetails();
+            displayMembers(members, year);
           } catch (error) {
-            console.error("Error fetching summary:", error);
+            console.error(`Failed to load members for ${year}:`, error);
+          } finally {
+            spinner.style.display = "none";
           }
         }
 
-        // Step 2: Fetch full member data with photos + social links
-        async function fetchFullMemberDetails() {
-          try {
-            const response = await fetch(
-              "https://sdc-yjpb.onrender.com/members"
-            );
-            const fullMembers = await response.json();
+        function displayMembers(members, year) {
+          const container = document.getElementById(`members-${year}`);
+          container.innerHTML = "";
 
-            fullMembers.forEach((member) => {
-              const card = document.getElementById(`member-${member._id}`);
-              if (card) {
-                card.querySelector(".image-wrapper").innerHTML = `
-                  <img src="${member.photo}" alt="${
-                  member.name
-                }" class="member-page-img" />
+          members.forEach((member) => {
+            const memberDiv = document.createElement("div");
+            memberDiv.className = "member-card";
+            memberDiv.innerHTML = `
+              <div class="member-page">
+                <div class="image-wrapper">
+                  <img class="member-page-img" src="${
+                    member.photo || "assets/img/logo.png"
+                  }" alt="${member.name}">
                   <div class="social-icons-on-image">
                     ${
                       member.linkedin
@@ -232,28 +272,6 @@
                         : ""
                     }
                   </div>
-                `;
-              }
-            });
-          } catch (error) {
-            console.error("Error loading full member details:", error);
-          } finally {
-            document.getElementById("loadingSpinner").style.display = "none";
-          }
-        }
-
-        // Render member cards with only name, role, department initially
-        function displayBasicMembers(members) {
-          memberContainer.innerHTML = "";
-          members.forEach((member) => {
-            const memberDiv = document.createElement("div");
-            memberDiv.className = "member-card";
-            memberDiv.id = `member-${member._id}`;
-
-            memberDiv.innerHTML = `
-              <div class="member-page">
-                <div class="image-wrapper">
-                 <img class="logo-img" src="assets/img/logo.png" alt="Member Image">
                 </div>
                 <div class="details">
                   <h3 class="member-name">${member.name}</h3>
@@ -262,7 +280,7 @@
                 </div>
               </div>
             `;
-            memberContainer.appendChild(memberDiv);
+            container.appendChild(memberDiv);
           });
         }
       </script>

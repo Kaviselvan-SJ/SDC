@@ -42,7 +42,7 @@ const memberSchema = new mongoose.Schema({
     department: { type: String, required: true },
     year: { type: String, required: true },
     role: { type: String, required: true },
-    photo: { type: String, required: true }, // Base64 or URL
+    photo: { type: String, required: true },
     linkedin: { type: String },
     instagram: { type: String },
     academicYear: { type: String, required: true },
@@ -163,21 +163,6 @@ app.get('/members', async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
-
-// Route to fetch only basic member info (fast)
-app.get('/members/summary', async (req, res) => {
-    try {
-        const members = await Member.find({}, 'name role department year priority') // only essential fields
-            .sort({ priority: 1 })
-            .lean();
-
-        res.json(members);
-    } catch (error) {
-        console.error("Error fetching member summary:", error);
-        res.status(500).json({ success: false, message: "Server error" });
-    }
-});
-
 
 // Route to upload a new member
 app.post('/add-member', async (req, res) => {
