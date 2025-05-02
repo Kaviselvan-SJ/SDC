@@ -268,9 +268,9 @@
             memberDiv.innerHTML = `
           <div class="member position-relative">
             <div class="image-wrapper">
-              <img src="${member.photo}" alt="${
-              member.name
-            }" class="member-photo">
+              <img src="${
+                member.photo ? member.photo : "assets/img/logo.png"
+              }"  alt="${member.name}" class="member-photo">
               <div class="gradient-overlay"></div>
               <div class="social-icons-on-image">
                 ${

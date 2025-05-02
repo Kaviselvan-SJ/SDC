@@ -261,8 +261,8 @@
       <div class="member-page">
         <div class="image-wrapper">
           <img class="member-page-img" src="${
-            member.photo || "assets/img/logo.png"
-          }" alt="${member.name}">
+            member.photo ? member.photo : "assets/img/logo.png"
+          }"  alt="${member.name}">
           <div class="social-icons-on-image">
             ${
               member.linkedin
