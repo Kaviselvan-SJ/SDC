@@ -56,6 +56,14 @@ const eventImageSchema = new mongoose.Schema({
     uploadedAt: { type: Date, default: Date.now }
 });
 
+// Schema for members gallery images
+const memberGalleryImageSchema = new mongoose.Schema({
+    image: { type: String, required: true },          // Image URL or file path
+    uploadedAt: { type: Date, default: Date.now }     // Timestamp of the upload
+});
+
+// Model for members gallery images
+const MemberGalleryImage = mongoose.model('MemberGalleryImage', memberGalleryImageSchema);
 const EventImage = mongoose.model('EventImage', eventImageSchema);
 const Member = mongoose.model('Member', memberSchema);
 const Event = mongoose.model('Event', eventSchema);
@@ -270,6 +278,48 @@ app.post('/delete-event-image', async (req, res) => {
         res.status(500).json({ success: false, message: "❌ Error deleting image", error });
     }
 });
+
+// Upload member gallery image
+app.post('/add-members-image', async (req, res) => {
+    try {
+        const { image } = req.body;
+        if (!image) return res.status(400).json({ success: false, message: "⚠️ No image provided!" });
+
+        const newImage = new MemberGalleryImage({ image });
+        await newImage.save();
+
+        res.json({ success: true, message: "✅ Member image uploaded successfully!" });
+    } catch (error) {
+        console.error("Error uploading member image:", error);
+        res.status(500).json({ success: false, message: "❌ Failed to upload member image", error });
+    }
+});
+
+// Get all member gallery images
+app.get('/members-images', async (req, res) => {
+    try {
+        const images = await MemberGalleryImage.find().sort('-uploadedAt');
+        res.json(images);
+    } catch (error) {
+        res.status(500).json({ success: false, message: "❌ Failed to fetch member images", error });
+    }
+});
+
+// Delete member gallery image
+app.post('/delete-members-image', async (req, res) => {
+    const { id } = req.body;
+    if (!id) return res.status(400).json({ success: false, message: "⚠️ Image ID required!" });
+
+    try {
+        const deleted = await MemberGalleryImage.findByIdAndDelete(id);
+        if (!deleted) return res.status(404).json({ success: false, message: "❌ Image not found" });
+
+        res.json({ success: true, message: "✅ Member image deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "❌ Error deleting member image", error });
+    }
+});
+
 
 
 // Start the server

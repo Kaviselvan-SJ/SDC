@@ -615,6 +615,8 @@ p.mb-0 {
   }
 }
 
+
+
 /*--------------------------------------------------------------
 # Scroll Top Button
 --------------------------------------------------------------*/
@@ -886,7 +888,7 @@ section,
 
 
 .custom-btn {
-  background-color: #da08c8;
+  background-color:  var(--accent-color);
   border: none;
   padding: 12px 28px;
   font-size: 16px;
@@ -897,7 +899,7 @@ section,
 }
 
 .custom-btn:hover {
-  background-color: #b006a3;
+  background-color:  var(--accent-color);
   transform: scale(1.05);
 }
 
@@ -935,7 +937,7 @@ section,
 /* Hover Effect */
 .member-page:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px #da08c8;
+  box-shadow: 0 8px 20px  var(--accent-color);
 }
 
 /* Wrapper for image, gradient & icons */
@@ -1302,7 +1304,7 @@ h2 {
 }
 
 .custom-btn {
-  background-color: #da08c8 !important;
+  background-color:  var(--accent-color);
   color: white !important;
   border: none;
   padding: 12px 20px;
@@ -1315,7 +1317,7 @@ h2 {
 
 /* Hover effect */
 .custom-btn:hover {
-  background-color: #b007a3 !important; /* Slightly darker shade */
+  background-color:  var(--accent-color); /* Slightly darker shade */
 }
 
 
@@ -1437,7 +1439,7 @@ h2 {
 /* Hover Effect */
 .member:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px #da08c8;
+  box-shadow: 0 8px 20px  var(--accent-color);
   background: #222;
 }
 
@@ -1505,7 +1507,7 @@ h2 {
 }
 
 .social-icons-on-image a {
-  color: #da08c8;;
+  color:  var(--accent-color);
   font-size: 20px;
   transition: transform 0.2s ease;
 }
@@ -1570,7 +1572,7 @@ h2 {
 
 #what-we-do .card:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px #da08c8;
+  box-shadow: 0 8px 20px  var(--accent-color);
   background: #222;
 }
 #what-we-do .card-title {

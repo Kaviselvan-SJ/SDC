@@ -67,7 +67,6 @@
             <li><a href="events.html">Events</a></li>
             <li><a href="members.html">Members</a></li>
             <li><a href="contact.html">Contact</a></li>
-            
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
@@ -90,15 +89,13 @@
       style="min-height: 100vh; background-color: #000; color: #fff"
     >
       <div class="container">
+        <!-- Event Gallery Section -->
         <h2 class="text-center mb-4">Upload Event Images</h2>
-
-        <!-- Upload Form and Image Gallery Layout -->
         <div
           class="d-flex justify-content-center flex-column align-items-center gap-5"
         >
-          <!-- Upload Form -->
           <form
-            id="imageUploadForm"
+            id="eventImageUploadForm"
             class="admin-form"
             style="width: 100%; max-width: 350px"
           >
@@ -112,13 +109,38 @@
             <button type="submit" class="btn btn-primary w-100">Upload</button>
           </form>
         </div>
-
-        <!-- 🛠 Image Gallery Heading (moved outside flexbox) -->
-        <h2 class="text-start mb-3">Image Gallery</h2>
-
-        <!-- Image Gallery -->
+        <h2 class="text-start mb-3">Event Image Gallery</h2>
         <div
-          id="imageGallery"
+          id="eventImageGallery"
+          class="d-flex flex-wrap justify-content-center gap-3"
+          style="max-width: 100%"
+        ></div>
+
+        <hr class="my-5" />
+
+        <!-- Member Gallery Section -->
+        <h2 class="text-center mb-4">Upload Member Images</h2>
+        <div
+          class="d-flex justify-content-center flex-column align-items-center gap-5"
+        >
+          <form
+            id="memberImageUploadForm"
+            class="admin-form"
+            style="width: 100%; max-width: 350px"
+          >
+            <input
+              type="file"
+              id="memberImage"
+              class="form-control mb-3"
+              accept="image/*"
+              required
+            />
+            <button type="submit" class="btn btn-success w-100">Upload</button>
+          </form>
+        </div>
+        <h2 class="text-start mb-3">Members Image Gallery</h2>
+        <div
+          id="memberImageGallery"
           class="d-flex flex-wrap justify-content-center gap-3"
           style="max-width: 100%"
         ></div>
@@ -127,71 +149,87 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("imageUploadForm");
-        const gallery = document.getElementById("imageGallery");
+        const eventForm = document.getElementById("eventImageUploadForm");
+        const eventGallery = document.getElementById("eventImageGallery");
 
-        // Load only event images
-        async function loadImages() {
+        const memberForm = document.getElementById("memberImageUploadForm");
+        const memberGallery = document.getElementById("memberImageGallery");
+
+        // Load event images
+        async function loadEventImages() {
           const res = await fetch("/event-images");
-          const events = await res.json();
-
-          gallery.innerHTML = "";
-
-          events.forEach((event) => {
-            if (event.image) {
-              const container = document.createElement("div");
-              container.style.position = "relative";
-              container.style.width = "200px";
-              container.style.height = "250px";
-              container.style.overflow = "hidden";
-              container.style.margin = "10px";
-              container.style.border = "1px solid #ccc";
-              container.style.borderRadius = "8px";
-              container.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
-
-              container.innerHTML = `
-        <img src="${event.image}" 
-             style="width: 100%; height: 100%; object-fit: cover;" />
-        <button onclick="deleteImage('${event._id}')" 
-                style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; padding: 4px 8px; cursor: pointer;">X</button>
-      `;
-
-              gallery.appendChild(container);
-            }
+          const images = await res.json();
+          eventGallery.innerHTML = "";
+          images.forEach((img) => {
+            eventGallery.appendChild(createImageCard(img, "event"));
           });
         }
 
-        // Upload image
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const file = document.getElementById("eventImage").files[0];
-          if (!file) return alert("Please select an image!");
+        // Load member images
+        async function loadMemberImages() {
+          const res = await fetch("/members-images");
+          const images = await res.json();
+          memberGallery.innerHTML = "";
+          images.forEach((img) => {
+            memberGallery.appendChild(createImageCard(img, "member"));
+          });
+        }
 
-          const reader = new FileReader();
-          reader.onloadend = async () => {
-            const base64Image = reader.result;
+        // Reusable image card creator
+        function createImageCard(imageObj, type) {
+          const container = document.createElement("div");
+          container.style.position = "relative";
+          container.style.width = "200px";
+          container.style.height = "250px";
+          container.style.overflow = "hidden";
+          container.style.margin = "10px";
+          container.style.border = "1px solid #ccc";
+          container.style.borderRadius = "8px";
+          container.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
 
-            const res = await fetch("/add-event-image", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ image: base64Image }),
-            });
+          container.innerHTML = `
+            <img src="${imageObj.image}" style="width: 100%; height: 100%; object-fit: cover;" />
+            <button onclick="deleteImage('${imageObj._id}', '${type}')" 
+                    style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; padding: 4px 8px; cursor: pointer;">X</button>
+          `;
+          return container;
+        }
 
-            const data = await res.json();
-            if (data.success) {
-              form.reset();
-              loadImages();
-            } else {
-              alert(data.message || "Upload failed");
-            }
-          };
+        // Upload image (common for event and member)
+        function handleUpload(form, inputId, url, reloadFn) {
+          form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const file = document.getElementById(inputId).files[0];
+            if (!file) return alert("Please select an image!");
 
-          reader.readAsDataURL(file);
-        });
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+              const base64Image = reader.result;
+
+              const res = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ image: base64Image }),
+              });
+
+              const data = await res.json();
+              if (data.success) {
+                form.reset();
+                reloadFn();
+              } else {
+                alert(data.message || "Upload failed");
+              }
+            };
+
+            reader.readAsDataURL(file);
+          });
+        }
 
         // Delete image
-        window.deleteImage = async (id) => {
-          const res = await fetch("/delete-event-image", {
+        window.deleteImage = async (id, type) => {
+          const url =
+            type === "event" ? "/delete-event-image" : "/delete-members-image";
+          const res = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id }),
@@ -199,13 +237,29 @@
 
           const data = await res.json();
           if (data.success) {
-            loadImages();
+            if (type === "event") loadEventImages();
+            else loadMemberImages();
           } else {
             alert(data.message || "Failed to delete image");
           }
         };
 
-        loadImages();
+        // Init
+        loadEventImages();
+        loadMemberImages();
+
+        handleUpload(
+          eventForm,
+          "eventImage",
+          "/add-event-image",
+          loadEventImages
+        );
+        handleUpload(
+          memberForm,
+          "memberImage",
+          "/add-members-image",
+          loadMemberImages
+        );
       });
     </script>
 
